@@ -25,9 +25,10 @@ public class CashbookDao {
 				+ "		, DAY(cash_date) cashDay"
 				+ "		, kind"
 				+ "		, cash"
+				+ "		, LEFT(memo,5) memo"
 				+ "	FROM cashbook"
 				+ "	WHERE YEAR(cash_date)=? AND MONTH(cash_date)=?"
-				+ " ORDER BY DAY(cash_date) ASC";
+				+ " ORDER BY DAY(cash_date) ASC, kind ASC";
 		
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
@@ -42,6 +43,7 @@ public class CashbookDao {
 				map.put("cashDay", rs.getInt("cashDay"));
 				map.put("kind", rs.getString("kind"));
 				map.put("cash", rs.getInt("cash"));
+				map.put("memo", rs.getString("memo"));
 				list.add(map);
 			}
 			

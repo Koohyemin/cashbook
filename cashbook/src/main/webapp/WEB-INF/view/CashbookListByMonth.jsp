@@ -8,37 +8,112 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 </head>
 <body>
-	<div class="container">
+	<div class="container-fluid">
 	<%
+		List<Map<String, Object>> list = (List<Map<String, Object>>)request.getAttribute("list");
 		int y = (Integer)request.getAttribute("y");
 		int m = (Integer)request.getAttribute("m");
+		
+		int startBlank = (Integer)request.getAttribute("startBlank");
+		int endDay = (Integer)request.getAttribute("endDay");
+		int endBlank = (Integer)request.getAttribute("endBlank");
+		int totalTd = (Integer)request.getAttribute("totalTd");
+		
+		// 디버깅
+		System.out.println("[list.size() CashBookListByMonth.jsp] : " + list.size());
+		System.out.println("[y CashBookListByMonth.jsp] : " + y);
+		System.out.println("[m CashBookListByMonth.jsp] : " + m);
+		
+		System.out.println("[startBlank CashBookListByMonth.jsp] : " + startBlank);
+		System.out.println("[endDay CashBookListByMonth.jsp] : " + endDay);
+		System.out.println("[endBlank CashBookListByMonth.jsp] : " + endBlank);
+		System.out.println("[totalTd CashBookListByMonth.jsp] : " + totalTd);
 	%>
 	<h2 class="text-center"><%=y%>년 <%=m%>월 가계부</h2>
-	<table class="table table-hover">
-		<thead class="text-center bg-info text-light">
-			<tr>
-				<th>일</th>
-				<th>수입/지출</th>
-				<th>금액</th>
-			</tr>
-		</thead>
-		<tbody class="text-center">
-		<%
-			List<Map<String, Object>> list = (List<Map<String, Object>>)request.getAttribute("list");
-			for(Map map : list) {
-		%>
-				<tr>
-					<td><%=map.get("cashDay")%></td>
-					<td <%if(map.get("kind").equals("수입")) {%>class="text-primary"<%} else {%>class="text-danger"<%}%>>
-						<%=map.get("kind")%> <!-- 수입: 파랑색, 지출: 빨간색 -->
-					</td>
-					<td><%=map.get("cash")%></td>
-				</tr>
-		<%
-			}
-		%>
-		</tbody>
-	</table>
+		<table class="table table-bordered">
+		 	<thead class="table-info text-center">
+		 		<tr>
+		 			<th class="text-danger">일</th>
+		 			<th>월</th>
+		 			<th>화</th>
+		 			<th>수</th>
+		 			<th>목</th>
+		 			<th>금</th>
+		 			<th class="text-primary">토</th>
+		 		</tr>
+		 	</thead>
+		 	<tbody>
+	<!-- 
+		1) 이번날 1일의 요일 firstDayYoil
+		2) 요일 -> startBlank -> 일 0, 월 1, 화 2, .... 토6
+		3) 이번달 마지막 날짜 endDay
+		4) endBlank -> totalBlank
+		5) td의 개수는 1 ~ totalBlank
+				+
+		6) 가계부 list
+		7) 오늘 날짜
+	 -->
+		 		<tr>
+		 		<%
+		 			for(int i=1; i<=totalTd; i++) {
+		 				if((i-startBlank) > 0 && (i-startBlank) <= endDay) {
+		 					String c = "";
+		 					if(i%7==0) {
+		 						c = "text-primary";
+		 					} else if(i%7==1) {
+		 						c = "text-danger";
+		 					}
+		 		%>
+		 						<td class="<%=c%>">
+		 							<%=i-startBlank%>
+		 							<a href="<%=request.getContextPath()%>/InsertCashbookControllerController?y=<%=y%>&m=<%=m%>&<%=i-startBlank%>" class="btn btn-light text-info">입력</a>
+		 							<div>
+		 									<%
+		 										// 해당 날짜의 cashbook 목록 출력
+												for(Map<String,Object> map : list) {
+													if((Integer)map.get("cashDay") == (i-startBlank)) {
+											%>
+														<div class="text-body">
+															<%
+																if("수입".equals(map.get("kind"))) {
+															%>
+																		
+																	<div class="text-success" style="display:inline;">[<%=map.get("kind")%>]</div>
+																	+
+															<%
+																} else {
+															%>
+																	<div class="text-danger" style="display:inline;">[<%=map.get("kind")%>]</div>
+																	-
+															<%
+																}
+															%>
+																	<%=map.get("cash")%>원
+																	<%=map.get("memo")%>...
+														</div>
+											<%
+													}
+												}
+											%>
+		 							</div>
+		 						</td>
+		 						
+		 		<%
+		 				} else {
+		 		%>
+		 					<td>&nbsp;</td>
+		 		<%
+		 				}
+		 				if(i<totalTd && i%7==0) {
+		 		%>
+		 					</tr><tr> <!-- 새로운 행을 추가시키기 위해 -->
+		 		<%
+		 				}
+		 			}
+		 		%>
+		 		</tr>
+		 	</tbody>
+		 </table>
 	<div class="text-center">
 		<a href="<%=request.getContextPath()%>/CashbookListByMonthController?y=<%=y%>&m=<%=m-1%>" class="btn btn-outline-info">이전</a>
 		<a href="<%=request.getContextPath()%>/CashbookListByMonthController?y=<%=y%>&m=<%=m+1%>" class="btn btn-outline-info">다음</a>
