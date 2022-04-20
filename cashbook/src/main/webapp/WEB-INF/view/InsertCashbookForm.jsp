@@ -1,0 +1,44 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>InsertCashbookForm</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+	<h2 class="text-center">가계부 입력</h2>
+	<form method="post" action="<%=request.getContextPath()%>/InsertCashbookController">
+		<table class="table">
+			<tr>
+				<th>날짜</th>
+				<td>
+					<input type="text" name="cashDate" value="<%=(String)request.getAttribute("cashDate")%>" readonly="readonly" class="form-control">
+				</td>
+			</tr>
+			<tr>
+				<th>수입/지출</th>
+				<td>
+					<input type="radio" name="kind" value="수입"> 수입
+					<input type="radio" name="kind" value="지출"> 지출
+				</td>
+			</tr>
+			<tr>
+				<th>금액</th>
+				<td>
+					<input type="number" name="cash" class="form-control">
+				</td>
+			</tr>
+			<tr>
+				<th>메모</th>
+				<td>
+					<textarea rows="4" name=memo cols="50" class="form-control"></textarea>
+				</td>
+			</tr>
+		</table>
+		<button type="submit">등록</button>
+	</form>
+</div>
+</body>
+</html>
