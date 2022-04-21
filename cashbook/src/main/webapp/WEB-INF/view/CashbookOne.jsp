@@ -25,7 +25,7 @@
 					<td><%=c.getKind()%></td>
 				</tr>
 				<tr>
-					<th class="table-info">수입/지출</th>
+					<th class="table-info">금액</th>
 					<td><%=c.getCash()%></td>
 				</tr>
 				<tr>

@@ -30,6 +30,7 @@
 		System.out.println("[totalTd CashBookListByMonth.jsp] : " + totalTd);
 	%>
 	<h2 class="text-center"><%=y%>년 <%=m%>월 가계부</h2>
+	<a href="<%=request.getContextPath()%>/TagController" class="btn btn-outline-info">tags</a><br><br>
 		<table class="table table-bordered">
 		 	<thead class="table-info text-center">
 		 		<tr>
@@ -54,65 +55,65 @@
 		7) 오늘 날짜
 	 -->
 		 		<tr>
-		 		<%
-		 			for(int i=1; i<=totalTd; i++) {
-		 				if((i-startBlank) > 0 && (i-startBlank) <= endDay) {
-		 					String c = "";
-		 					if(i%7==0) {
-		 						c = "text-primary";
-		 					} else if(i%7==1) {
-		 						c = "text-danger";
-		 					}
-		 		%>
-		 						<td class="<%=c%>">
-		 							<%=i-startBlank%>
-		 							<a href="<%=request.getContextPath()%>/InsertCashbookController?y=<%=y%>&m=<%=m%>&d=<%=i-startBlank%>" class="btn btn-light text-info">입력</a>
-		 							<div>
-		 									<%
-		 										// 해당 날짜의 cashbook 목록 출력
-												for(Map<String,Object> map : list) {
-													if((Integer)map.get("cashDay") == (i-startBlank)) {
-											%>
-														<div>
-															<a href="<%=request.getContextPath()%>/CashbookOneController?cashbookNo=<%=map.get("cashbookNo")%>" class="text-body">
-															<%
-																if("수입".equals(map.get("kind"))) {
-															%>
-																		
-																	<div class="text-success" style="display:inline;">[<%=map.get("kind")%>]</div>
-																	+
-															<%
-																} else {
-															%>
-																	<div class="text-danger" style="display:inline;">[<%=map.get("kind")%>]</div>
-																	-
-															<%
-																}
-															%>
-																	<%=map.get("cash")%>원
-																	<%=map.get("memo")%>...
-															</a>
-														</div>
-											<%
+			 		<%
+			 			for(int i=1; i<=totalTd; i++) {
+			 				if((i-startBlank) > 0 && (i-startBlank) <= endDay) {
+			 					String c = "";
+			 					if(i%7==0) {
+			 						c = "text-primary";
+			 					} else if(i%7==1) {
+			 						c = "text-danger";
+			 					}
+			 		%>
+			 						<td class="<%=c%>">
+			 							<%=i-startBlank%>
+			 							<a href="<%=request.getContextPath()%>/InsertCashbookController?y=<%=y%>&m=<%=m%>&d=<%=i-startBlank%>" class="btn btn-light text-info">입력</a>
+			 							<div>
+			 									<%
+			 										// 해당 날짜의 cashbook 목록 출력
+													for(Map<String,Object> map : list) {
+														if((Integer)map.get("cashDay") == (i-startBlank)) {
+												%>
+															<div>
+																<a href="<%=request.getContextPath()%>/CashbookOneController?cashbookNo=<%=map.get("cashbookNo")%>" class="text-body">
+																<%
+																	if("수입".equals(map.get("kind"))) {
+																%>
+																			
+																		<div class="text-success" style="display:inline;">[<%=map.get("kind")%>]</div>
+																		+
+																<%
+																	} else {
+																%>
+																		<div class="text-danger" style="display:inline;">[<%=map.get("kind")%>]</div>
+																		-
+																<%
+																	}
+																%>
+																		<%=map.get("cash")%>원
+																		<%=map.get("memo")%>...
+																</a>
+															</div>
+												<%
+														}
 													}
-												}
-											%>
-		 							</div>
-		 						</td>
+												%>
+			 							</div>
+			 						</td>
 		 						
-		 		<%
-		 				} else {
-		 		%>
-		 					<td>&nbsp;</td>
-		 		<%
-		 				}
-		 				if(i<totalTd && i%7==0) {
-		 		%>
-		 					</tr><tr> <!-- 새로운 행을 추가시키기 위해 -->
-		 		<%
-		 				}
-		 			}
-		 		%>
+			 		<%
+			 				} else {
+			 		%>
+			 					<td>&nbsp;</td>
+			 		<%
+			 				}
+			 				if(i<totalTd && i%7==0) {
+			 		%>
+			 					</tr><tr> <!-- 새로운 행을 추가시키기 위해 -->
+			 		<%
+			 				}
+			 			}
+			 		%>
 		 		</tr>
 		 	</tbody>
 		 </table>
