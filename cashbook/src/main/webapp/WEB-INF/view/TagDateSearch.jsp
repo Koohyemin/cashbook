@@ -16,7 +16,13 @@
 			<tr>
 				<td>날짜</td>
 				<td>
-					<input type="date" name="cashDate" class="form-control">
+					<input type="date" name="startDate" class="form-control col-sm-10">
+				</td>
+				<td>
+					~
+				</td>
+				<td>
+					<input type="date" name="endDate" class="form-control col-sm-10">
 				</td>
 				<td>
 					<button type="submit" class="btn btn-info">검색</button>
@@ -25,34 +31,42 @@
 		</table>
 	</form>
 	<%
-		if(request.getAttribute("cashDate")!=null) {
-			String cashDate = (String)request.getAttribute("cashDate");
+		if(null != request.getAttribute("startDate")) {
+			String startDate = (String)request.getAttribute("startDate");
+			String endDate = (String)request.getAttribute("endDate");
 			List<Map<String, Object>> list = (List<Map<String, Object>>)request.getAttribute("list");
+			if(list.size()==0) {
 	%>
-			<h2 class="text-center"><%=cashDate%></h2>
-			<table class="table text-center">
-				<thead class="table-info">
-					<tr>
-						<th>순위</th>
-						<th>해시태그</th>
-						<th>개수</th>
-					</tr>
-				</thead>
-				<tbody>
-					<%
-						for(Map<String, Object> map : list) {
-					%>
-							<tr>
-								<td><%=map.get("ranking")%></td>
-								<td><%=map.get("tag")%></td>
-								<td><%=map.get("cnt")%></td>
-							</tr>
-					<%
-						}
-					%>
-				</tbody>
-			</table>
+				<h2 class="text-center"><%=startDate%>~<%=endDate%></h2>
+				<h4 class="text-danger text-center">등록된 해시태그가 존재하지 않습니다.</h4>
 	<%
+			} else {
+	%>
+				<h2 class="text-center"><%=startDate%>~<%=endDate%></h2>
+				<table class="table text-center">
+					<thead class="table-info">
+						<tr>
+							<th>순위</th>
+							<th>해시태그</th>
+							<th>개수</th>
+						</tr>
+					</thead>
+					<tbody>
+						<%
+							for(Map<String, Object> map : list) {
+						%>
+								<tr>
+									<td><%=map.get("ranking")%></td>
+									<td><%=map.get("tag")%></td>
+									<td><%=map.get("cnt")%></td>
+								</tr>
+						<%
+							}
+						%>
+					</tbody>
+				</table>
+	<%
+			}
 		}
 	%>
 </div>

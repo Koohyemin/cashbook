@@ -71,7 +71,7 @@ public class HashtagDao {
 		}
 		return list;
 	}
-	public List<Map<String, Object>> tagDateSearchList(String cashDate) {
+	public List<Map<String, Object>> tagDateSearchList(String startDate, String endDate) {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -79,13 +79,14 @@ public class HashtagDao {
 		String sql = "SELECT h.tag tag, COUNT(*) cnt, RANK() over(ORDER BY cnt DESC) ranking"
 					+ " FROM hashtag h INNER JOIN cashbook c"
 					+ "		ON h.cashbook_no = c.cashbook_no"
-					+ " WHERE c.cash_date=?"
+					+ " WHERE c.cash_date BETWEEN ? AND ?"
 					+ " GROUP BY tag";
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
 			stmt = conn.prepareStatement(sql);
-			stmt.setString(1, cashDate);
+			stmt.setString(1, startDate);
+			stmt.setString(2, endDate);
 			rs = stmt.executeQuery();
 	         while(rs.next()) {
 	             Map<String, Object> map = new HashMap<>();
