@@ -13,11 +13,29 @@
 %>
 <div class="container">
 	<h1 class="text-center">해시태그</h1>
-	<div>
-		<a href="<%=request.getContextPath()%>/CashbookListByMonthController" class="btn btn-outline-info">가계부 돌아가기</a>
-		<a href="<%=request.getContextPath()%>/TagKindSearchController" class="btn btn-outline-info">수입/지출별 검색</a>
-		<a href="<%=request.getContextPath()%>/TagDateSearchController" class="btn btn-outline-info">날짜별 검색</a>
-	</div> <br>
+	<div style="float:left">
+		 <a href="<%=request.getContextPath()%>/CashbookListByMonthController" class="btn btn-link text-info">가계부 돌아가기</a>
+	</div>
+	<!-- 수입/지출 검색 -->
+	<form method="get" action="<%=request.getContextPath()%>/TagKindSearchController" style="float:left">
+		<select name="kind" onchange="this.form.submit()" class="custom-select col-lg-12">
+			<option>수입/지출 선택</option>
+			<option value="수입">수입</option>
+			<option value="지출">지출</option>
+		</select>
+	</form>
+	<!-- 기간별 해시태그 검색 -->
+	<form method="get" action="<%=request.getContextPath()%>/TagDateSearchController">
+		<div style="float:right;">
+			<button type="submit" class="btn btn-outline-info">검색</button>
+		</div>
+		<div class="input-group-prepend" style="float:right;">
+			<input type=date name="startDate" class="form-control"> ~
+			<input type=date name="endDate" class="form-control"> &nbsp;
+		</div>
+	</form>
+	<br><br>
+	<!-- 해시태그 목록 -->
 	<table class="table text-center">
 		<thead class="table-info">
 			<tr>

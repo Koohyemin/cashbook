@@ -9,40 +9,20 @@
 </head>
 <body>
 <div class="container">
-	<h1 class="text-center">날짜별 검색</h1>
+<%
+	String startDate = (String)request.getAttribute("startDate");
+	String endDate = (String)request.getAttribute("endDate");
+	List<Map<String, Object>> list = (List<Map<String, Object>>)request.getAttribute("list");
+%>
+	<h1 class="text-center"><%=startDate%>~<%=endDate%> 해시태그</h1>
 	<a href="<%=request.getContextPath()%>/TagController" class="btn btn-outline-info">tags</a><br><br>
-	<form method="get" action="<%=request.getContextPath()%>/TagDateSearchController">
-		<table class="table text-center">
-			<tr>
-				<td>날짜</td>
-				<td>
-					<input type="date" name="startDate" class="form-control col-sm-10">
-				</td>
-				<td>
-					~
-				</td>
-				<td>
-					<input type="date" name="endDate" class="form-control col-sm-10">
-				</td>
-				<td>
-					<button type="submit" class="btn btn-info">검색</button>
-				</td>
-			</tr>
-		</table>
-	</form>
 	<%
-		if(null != request.getAttribute("startDate")) {
-			String startDate = (String)request.getAttribute("startDate");
-			String endDate = (String)request.getAttribute("endDate");
-			List<Map<String, Object>> list = (List<Map<String, Object>>)request.getAttribute("list");
 			if(list.size()==0) {
 	%>
-				<h2 class="text-center"><%=startDate%>~<%=endDate%></h2>
 				<h4 class="text-danger text-center">등록된 해시태그가 존재하지 않습니다.</h4>
 	<%
 			} else {
 	%>
-				<h2 class="text-center"><%=startDate%>~<%=endDate%></h2>
 				<table class="table text-center">
 					<thead class="table-info">
 						<tr>
@@ -67,7 +47,6 @@
 				</table>
 	<%
 			}
-		}
 	%>
 </div>
 </body>
