@@ -8,6 +8,7 @@
 </head>
 <body>
 <div class="container">
+	<br>
 	<h2 class="text-center">가계부 입력</h2>
 	<a href="<%=request.getContextPath()%>/CashbookListByMonthController" class="btn btn-link">가계부</a>
 	<form method="post" action="<%=request.getContextPath()%>/InsertCashbookController">

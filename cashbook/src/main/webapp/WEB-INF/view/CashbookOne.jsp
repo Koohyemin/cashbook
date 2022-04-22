@@ -13,8 +13,9 @@
 	int cashbookNo = (Integer)request.getAttribute("cashbookNo");
 %>
 	<div class="container">
+	<br>
 	<h2 class="text-center">상세보기</h2>
-	<a href="<%=request.getContextPath()%>/CashbookListByMonthController" class="btn btn-outline-info">가계부</a>
+	<a href="<%=request.getContextPath()%>/CashbookListByMonthController" class="btn btn-link">가계부</a>
 		<table class="table table-bordered text-center">
 				<tr>
 					<th class="table-info">날짜</th>

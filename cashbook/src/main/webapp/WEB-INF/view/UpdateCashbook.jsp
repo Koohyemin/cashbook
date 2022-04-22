@@ -12,6 +12,7 @@
 	Cashbook c = (Cashbook)request.getAttribute("cashbook");
 %>
 <div class="container">
+	<br>
 	<h2 class="text-center">가계부 수정</h2>
 	<a href="<%=request.getContextPath()%>/CashbookOneController?cashbookNo=<%=c.getCashbookNo()%>" class="btn btn-link">이전으로</a>
 	<form method="post" action="<%=request.getContextPath()%>/UpdateCashbookController">

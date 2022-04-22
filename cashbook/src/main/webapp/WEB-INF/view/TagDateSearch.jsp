@@ -14,6 +14,7 @@
 	String endDate = (String)request.getAttribute("endDate");
 	List<Map<String, Object>> list = (List<Map<String, Object>>)request.getAttribute("list");
 %>
+	<br>
 	<h1 class="text-center"><%=startDate%>~<%=endDate%> 해시태그</h1>
 	<a href="<%=request.getContextPath()%>/TagController" class="btn btn-outline-info">tags</a><br><br>
 	<%

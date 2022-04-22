@@ -13,6 +13,7 @@
 	String kind = (String)request.getAttribute("kind");
 	List<Map<String, Object>> list = (List<Map<String, Object>>)request.getAttribute("list");
 %>
+	<br>
 	<h1 class="text-center">[<%=kind%>] 해시태그</h1>
 	<a href="<%=request.getContextPath()%>/TagController" class="btn btn-outline-info">tags</a><br><br>
 		<table class="table text-center">

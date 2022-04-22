@@ -13,9 +13,9 @@
 	List<Map<String, Object>> list = (List<Map<String, Object>>)request.getAttribute("list");
 %>
 <div class="container">
-	<h1 class="text-center">카테고리별 상세보기</h1>
-	<h3 class="text-center text-secondary">total : <%=tagCount%>개</h3>
-	<a href="<%=request.getContextPath()%>/TagController" class="btn btn-outline-info">tags</a>
+	<br>
+	<h1 class="text-center">해시태그별 상세보기<span class="text-secondary">[total : <%=tagCount%>개]</span></h1>
+	<a href="<%=request.getContextPath()%>/TagController" class="btn btn-link text-info">해시태그</a>
 	<table class="table text-center">
 		<thead class="table-info">
 			<tr>
