@@ -16,6 +16,8 @@ import vo.Member;
 public class LoginController extends HttpServlet {
 	// 로그인 폼
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8"); // 인코딩
+		
 		HttpSession session = request.getSession();
 		String sessionMemberId = (String)session.getAttribute("sessionMemberId");
 		if(sessionMemberId != null) {
@@ -46,7 +48,7 @@ public class LoginController extends HttpServlet {
 		}
 		// 로그인 성공
 		HttpSession session = request.getSession(); // 현재 연결한 클라이언트(브라우저)에 대하 세션값을 받아옴
-		session.setAttribute("returnMemberId", returnMemberId);
+		session.setAttribute("sessionMemberId", returnMemberId);
 		response.sendRedirect(request.getContextPath()+"/CashbookListByMonthController");
 	}
 }

@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.CashbookDao;
 import vo.Cashbook;
@@ -14,6 +15,16 @@ import vo.Cashbook;
 @WebServlet("/UpdateCashbookController")
 public class UpdateCashbookController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
+		// 세션 확인
+		HttpSession session = request.getSession();
+		String memberId = (String)session.getAttribute("sessionMemberId");
+		if(memberId == null) {
+			// 로그인이 되어있지 않은 상태 -> 로그인 폼으로 돌아가기
+			response.sendRedirect(request.getContextPath() + "/LoginController");
+			return;
+		}
+		
 		int cashbookNo = Integer.parseInt(request.getParameter("cashbookNo"));
 		CashbookDao cashbookDao = new CashbookDao();
 		Cashbook cashbook = new Cashbook();
@@ -30,6 +41,15 @@ public class UpdateCashbookController extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
+
+		// 세션 확인
+		HttpSession session = request.getSession();
+		String memberId = (String)session.getAttribute("sessionMemberId");
+		if(memberId == null) {
+			// 로그인이 되어있지 않은 상태 -> 로그인 폼으로 돌아가기
+			response.sendRedirect(request.getContextPath() + "/LoginController");
+			return;
+		}
 		
 		Cashbook cashbook = new Cashbook();
 		cashbook.setKind(request.getParameter("kind"));

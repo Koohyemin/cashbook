@@ -18,24 +18,25 @@
 		int endDay = (Integer)request.getAttribute("endDay");
 		int endBlank = (Integer)request.getAttribute("endBlank");
 		int totalTd = (Integer)request.getAttribute("totalTd");
-		
-		// 디버깅
-		System.out.println("[list.size() CashBookListByMonth.jsp] : " + list.size());
-		System.out.println("[y CashBookListByMonth.jsp] : " + y);
-		System.out.println("[m CashBookListByMonth.jsp] : " + m);
-		
-		System.out.println("[startBlank CashBookListByMonth.jsp] : " + startBlank);
-		System.out.println("[endDay CashBookListByMonth.jsp] : " + endDay);
-		System.out.println("[endBlank CashBookListByMonth.jsp] : " + endBlank);
-		System.out.println("[totalTd CashBookListByMonth.jsp] : " + totalTd);
+		/* 		
+			-- 디버깅
+			System.out.println("[list.size() CashBookListByMonth.jsp] : " + list.size());
+			System.out.println("[y CashBookListByMonth.jsp] : " + y);
+			System.out.println("[m CashBookListByMonth.jsp] : " + m);
+			
+			System.out.println("[startBlank CashBookListByMonth.jsp] : " + startBlank);
+			System.out.println("[endDay CashBookListByMonth.jsp] : " + endDay);
+			System.out.println("[endBlank CashBookListByMonth.jsp] : " + endBlank);
+			System.out.println("[totalTd CashBookListByMonth.jsp] : " + totalTd); 
+		*/
 	%>
 	<br>
 	<h2 class="text-center"><%=y%>년 <%=m%>월 가계부</h2>
-	<div style="float:right;">
-		<a href="<%=request.getContextPath()%>/SelectMemberOneController?sessionMemberId=<%=session.getAttribute("returnMemberId")%>">[<%=session.getAttribute("returnMemberId")%>]</a>님 반갑습니다.
+	<div style="float:right">
+		<a href="<%=request.getContextPath()%>/SelectMemberOneController?memberId=<%=session.getAttribute("sessionMemberId")%>">[<%=session.getAttribute("sessionMemberId")%>]</a>님 반갑습니다.
 		<a href="<%=request.getContextPath()%>/LogoutController" class="btn btn-outline-info btn-sm">로그아웃</a>
 	</div>
-	<div style="float:left;">
+	<div style="float:left">
 		<a href="<%=request.getContextPath()%>/TagController" class="btn btn-info">해시태그</a>
 	</div>
 	<br><br>

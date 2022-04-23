@@ -12,6 +12,7 @@
 	Member member = (Member)request.getAttribute("member");
 %>
 <div class="container">
+	<br>
 	<h1 class="text-center">회원정보 수정</h1>
 	<a href="<%=request.getContextPath()%>/SelectMemberOneController?memberId=<%=member.getMemberId()%>" class="btn btn-link text-info">정보 상세보기</a>
 	<form method="post" action="<%=request.getContextPath()%>/UpdateMemberController">
@@ -35,9 +36,15 @@
 				</td>
 			</tr>
 			<tr>
-				<th class="table-info text-center">비밀번호</th>
+				<th class="table-info text-center">수정 비밀번호</th>
 				<td>
-					<input type="password" name="checkPw" class="form-control">
+					<input type="password" name="memberPw" class="form-control">
+				</td>
+			</tr>
+			<tr>
+				<th class="table-info text-center">비밀번호 확인</th>
+				<td>
+					<input type="password" name="memberPwCheck" class="form-control">
 				</td>
 			</tr>
 		</table>
@@ -45,7 +52,7 @@
 			<button type="submit" class="btn btn-info float-right">수정</button>
 		</div>
 		<div>
-			<input type="password" name="memberPw" placeholder="수정을 위해 기존비밀번호를 입력해주세요." class="form-control col-sm-4 float-right">
+			<input type="password" name="originalCheckPw" placeholder="수정을 위해 기존비밀번호를 입력해주세요." class="form-control col-sm-4 float-right">
 		</div>
 	</form>
 </div>

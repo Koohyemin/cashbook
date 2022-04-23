@@ -5,7 +5,7 @@ import java.sql.*;
 import vo.*;
 
 public class CashbookDao {
-	public List<Map<String, Object>> selectCashbookListByMonth(int y, int m) {
+	public List<Map<String, Object>> selectCashbookListByMonth(int y, int m, String memberId) {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		
 		/*
@@ -26,8 +26,9 @@ public class CashbookDao {
 				+ "		, kind"
 				+ "		, cash"
 				+ "		, LEFT(memo,5) memo"
+				+"		, member_id memberId"
 				+ "	FROM cashbook"
-				+ "	WHERE YEAR(cash_date)=? AND MONTH(cash_date)=?"
+				+ "	WHERE YEAR(cash_date)=? AND MONTH(cash_date)=? AND member_id=?"
 				+ " ORDER BY DAY(cash_date) ASC, kind ASC";
 		
 		try {
@@ -36,6 +37,7 @@ public class CashbookDao {
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, y);
 			stmt.setInt(2, m);
+			stmt.setString(3, memberId);
 			rs = stmt.executeQuery();
 			while(rs.next()) {
 				Map<String, Object> map = new HashMap<String, Object>();
@@ -71,8 +73,8 @@ public class CashbookDao {
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
 			conn.setAutoCommit(false); // 자동커밋을 해제
 			
-			String insertSql = "INSERT INTO cashbook(cash_date, kind, cash, memo, update_date, create_date)"
-								+ " VALUES(?,?,?,?,NOW(),NOW())";
+			String insertSql = "INSERT INTO cashbook(cash_date, kind, cash, memo, member_id, update_date, create_date)"
+								+ " VALUES(?,?,?,?,?,NOW(),NOW())";
 			
 			// insert + select 방금 생성된 행의 키값 ex)select 방금 입력한 cashbook_no from cashbook;
 			stmt = conn.prepareStatement(insertSql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -80,6 +82,7 @@ public class CashbookDao {
 			stmt.setString(2, cashbook.getKind());
 			stmt.setInt(3, cashbook.getCash());
 			stmt.setString(4, cashbook.getMemo());
+			stmt.setString(5, cashbook.getMemberId());
 			stmt.executeUpdate(); // insert
 			rs = stmt.getGeneratedKeys();  // select 방금입력한 cashbook_no from cashbook;
 			int cashbookNo = 0;
@@ -205,5 +208,4 @@ public class CashbookDao {
 			e.printStackTrace();
 		}
 	}
-	
 }

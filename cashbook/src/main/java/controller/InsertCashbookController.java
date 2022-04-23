@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.CashbookDao;
 import vo.Cashbook;
@@ -16,6 +17,17 @@ import vo.Cashbook;
 public class InsertCashbookController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8"); // 인코딩
+		
+		// 세션 확인
+		HttpSession session = request.getSession();
+		String memberId = (String)session.getAttribute("sessionMemberId");
+		if(memberId == null) {
+			// 로그인이 되어있지 않은 상태 -> 로그인 폼으로 돌아가기
+			response.sendRedirect(request.getContextPath() + "/LoginController");
+			return;
+		}
+		
 		String y = request.getParameter("y");
 		String m = request.getParameter("m");
 		String d = request.getParameter("d");
@@ -26,9 +38,16 @@ public class InsertCashbookController extends HttpServlet {
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 유효성검사 추가하기
-
 		request.setCharacterEncoding("utf-8");
+		
+		// 세션 확인
+		HttpSession session = request.getSession();
+		String memberId = (String)session.getAttribute("sessionMemberId");
+		if(memberId == null) {
+			// 로그인이 되어있지 않은 상태 -> 로그인 폼으로 돌아가기
+			response.sendRedirect(request.getContextPath() + "/LoginController");
+			return;
+		}
 		
 		String cashDate = request.getParameter("cashDate");
 		String kind = request.getParameter("kind");
@@ -40,6 +59,7 @@ public class InsertCashbookController extends HttpServlet {
 		cashbook.setKind(kind);
 		cashbook.setCash(cash);
 		cashbook.setMemo(memo);
+		cashbook.setMemberId(memberId);
 		
 		// 디버깅
 		System.out.println("[cashDate InsertCashbookController.doPost()] :" + cashDate);

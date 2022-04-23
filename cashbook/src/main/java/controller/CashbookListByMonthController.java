@@ -17,14 +17,17 @@ import dao.CashbookDao;
 @WebServlet("/CashbookListByMonthController")
 public class CashbookListByMonthController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8"); // 인코딩
+		
 		// 로그인 상태 확인
 		HttpSession session = request.getSession();
-		String sessionMemberId = (String)session.getAttribute("sessionMemberId");
-		if(sessionMemberId != null) {
-			// 이미 로그인이 되어있는 상태
+		String memberId = (String)session.getAttribute("sessionMemberId");
+		if(memberId == null) {
+			// 로그인이 되어있지 않은 상태 -> 로그인 폼으로 돌아가기
 			response.sendRedirect(request.getContextPath() + "/LoginController");
 			return;
 		}
+		System.out.println("[MemberId CashbookListByMonthController] : " + memberId + "님이 로그인하셨습니다");
 		
 		// 1) 월별 가계부 리스트 요청 분석
 		Calendar now = Calendar.getInstance();
@@ -48,7 +51,7 @@ public class CashbookListByMonthController extends HttpServlet {
 			y = y+1;
 		}
 		
-		System.out.println("[연도 / 월] : " + y + "년 / " + m + "월");
+		System.out.println("[date CashbookListByMonthController] : " + y + "년 - " + m + "월");
 		
 		/*
 		 	1) startBlank
@@ -83,7 +86,7 @@ public class CashbookListByMonthController extends HttpServlet {
 		
 		// 2) 모델값(월별 가계부 리스트)을 반환하는 비지니스로직(모델) 호출
 		CashbookDao cashbookDao = new CashbookDao();
-		List<Map<String, Object>> list = cashbookDao.selectCashbookListByMonth(y, m);
+		List<Map<String, Object>> list = cashbookDao.selectCashbookListByMonth(y, m, memberId);
 		
 		
 		// 달력출력에 필요한 모델값(1),2),3),4)) + 데이터베이스에서 반환된 모델값(list, y출력 연도, m출력 월)
