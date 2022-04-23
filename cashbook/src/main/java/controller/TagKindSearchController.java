@@ -29,7 +29,7 @@ public class TagKindSearchController extends HttpServlet {
 		if(request.getParameter("kind") != null) {
 			String kind = request.getParameter("kind");
 			HashtagDao hashtagDao = new HashtagDao();
-			List<Map<String, Object>> list = hashtagDao.tagKindSearchList(kind);
+			List<Map<String, Object>> list = hashtagDao.tagKindSearchList(kind, memberId);
 			request.setAttribute("kind", kind);
 			request.setAttribute("list", list);
 			

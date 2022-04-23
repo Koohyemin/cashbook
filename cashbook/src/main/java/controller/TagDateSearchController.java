@@ -43,7 +43,7 @@ public class TagDateSearchController extends HttpServlet {
 		}
 		
 		HashtagDao hashbookDao = new HashtagDao();
-		List<Map<String, Object>> list = hashbookDao.tagDateSearchList(startDate, endDate);
+		List<Map<String, Object>> list = hashbookDao.tagDateSearchList(startDate, endDate, memberId);
 		System.out.println("[startDate TagDateSearchController] : " + startDate);
 		System.out.println("[endDate TagDateSearchController] : " + endDate);
 		request.setAttribute("startDate", startDate);

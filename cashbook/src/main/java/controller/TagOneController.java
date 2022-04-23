@@ -30,7 +30,7 @@ public class TagOneController extends HttpServlet {
 		int tagCount = Integer.parseInt(request.getParameter("tagCount"));
 		
 		HashtagDao hashtagDao = new HashtagDao();
-		List<Map<String, Object>> list = hashtagDao.selectTagOne(tag);
+		List<Map<String, Object>> list = hashtagDao.selectTagOne(tag, memberId);
 		
 		request.setAttribute("tagCount", tagCount);
 		request.setAttribute("list", list);
