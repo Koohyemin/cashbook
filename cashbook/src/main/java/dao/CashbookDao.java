@@ -155,26 +155,33 @@ public class CashbookDao {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		PreparedStatement stmt2 = null;
+		String hashtagSql = "DELETE FROM hashtag WHERE cashbook_no=?";
+		String cashbooksql = "DELETE FROM cashbook WHERE cashbook_no=?";
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
+			conn.setAutoCommit(false);
 			// 해시태그 삭제
-			String hashtagSql = "DELETE FROM hashtag WHERE cashbook_no=?";
-			stmt2 = conn.prepareStatement(hashtagSql);
-			stmt2.setInt(1, cashbookNo);
-			stmt2.executeUpdate();
-			// 가계부 삭제
-			String sql = "DELETE FROM cashbook WHERE cashbook_no=?";
-			stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(hashtagSql);
 			stmt.setInt(1, cashbookNo);
-			int row = stmt.executeUpdate();
+			stmt.executeUpdate();
+			// 가계부 삭제
+			stmt2 = conn.prepareStatement(cashbooksql);
+			stmt2.setInt(1, cashbookNo);
+			int row = stmt2.executeUpdate();
+			
 			if(row == 1) {
 				System.out.println("가계부 삭제 성공");
+				conn.commit();
 			} else {
 				System.out.println("가계부 삭제 실패");
 			}
-			conn.commit();
 		} catch(Exception e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		} finally {
 			try {
@@ -185,27 +192,58 @@ public class CashbookDao {
 			}
 		}
 	}
-	public void updateCashbook(Cashbook cashbook) {
+	public void updateCashbook(Cashbook cashbook, List<String> hashtag) {
 		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		String sql = "UPDATE cashbook SET kind = ?, cash = ?, memo = ?, update_date = NOW() WHERE cashbook_no = ?";
+		PreparedStatement stmt1 = null;
+		PreparedStatement stmt2 = null;
+		PreparedStatement stmt3 = null;
+		String deleteHashtagSql = "DELETE FROM hashtag WHERE cashbook_no=?"; // 해시태그 삭제
+		String updateSql = "UPDATE cashbook SET kind = ?, cash = ?, memo = ?, update_date = NOW() WHERE cashbook_no = ?"; // 업데이트 등록
+		String hashtagSql = "INSERT INTO hashtag(cashbook_no,tag,create_date) VALUES(?,?,NOW())"; // 업데이트 된 해시태그 등록
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
-			stmt = conn.prepareStatement(sql);
-			stmt.setString(1, cashbook.getKind());
-			stmt.setInt(2, cashbook.getCash());
-			stmt.setString(3, cashbook.getMemo());
-			stmt.setInt(4, cashbook.getCashbookNo());
-			int row = stmt.executeUpdate();
+			// 해시태그 삭제
+			stmt1 = conn.prepareStatement(deleteHashtagSql);
+			stmt1.setInt(1, cashbook.getCashbookNo());
+			stmt1.executeUpdate();
+			// 게시글 수정 적용
+			stmt2 = conn.prepareStatement(updateSql);
+			stmt2.setString(1, cashbook.getKind());
+			stmt2.setInt(2, cashbook.getCash());
+			stmt2.setString(3, cashbook.getMemo());
+			stmt2.setInt(4, cashbook.getCashbookNo());
+			int row = stmt2.executeUpdate();
+			
+			stmt3 = conn.prepareStatement(hashtagSql);
+			// 수정 게시글 해시태그 등록
+			for(String h : hashtag) {
+				stmt3.setInt(1, cashbook.getCashbookNo());
+				stmt3.setString(2, h);
+				stmt3.executeUpdate();
+			}
+			
 			if(row == 1) {
-				System.out.println("가계부 입력 성공");
+				System.out.println("가계부 수정 성공");
+				conn.commit(); // 수정 성공시 커밋
 			} else {
-				System.out.println("가계부 입력 실패");
+				System.out.println("가계부 수정 실패");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			try {
+				conn.rollback(); 
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		} finally {
+			try {
+				stmt3.close();
+				stmt2.close();
+				stmt1.close();
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

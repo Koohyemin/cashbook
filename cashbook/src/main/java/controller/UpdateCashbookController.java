@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.util.*;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -57,8 +59,20 @@ public class UpdateCashbookController extends HttpServlet {
 		cashbook.setMemo(request.getParameter("memo"));
 		cashbook.setCashbookNo(Integer.parseInt(request.getParameter("cashbookNo")));
 		
+		List<String> hashtag = new ArrayList<String>();
+		String memo = request.getParameter("memo").replace("#", " #");
+		String[] arr = memo.split(" ");
+		for(String s : arr) {
+			if(s.startsWith("#")) {
+				String temp = s.replace("#", "");
+				if(temp.length()>0) {
+					hashtag.add(temp);
+				}
+			}
+		}
+		
 		CashbookDao cashbookDao = new CashbookDao();
-		cashbookDao.updateCashbook(cashbook);
+		cashbookDao.updateCashbook(cashbook, hashtag);
 		
 		// 수정 후 리스트로 돌아가기
 		response.sendRedirect(request.getContextPath()+"/CashbookListByMonthController");
