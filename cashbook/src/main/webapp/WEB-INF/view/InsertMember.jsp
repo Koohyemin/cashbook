@@ -11,36 +11,36 @@
 		<br>
 		<h1 class="text-center">회원가입</h1>
 		<a href="<%=request.getContextPath()%>/LoginController" class="btn btn-link">로그인</a>
-		<form method="post" action="<%=request.getContextPath()%>/InsertMemberController">
+		<form method="post" action="<%=request.getContextPath()%>/InsertMemberController" class="was-validated">
 			<table class="table">
 				<tr>
 					<th class="table-info text-center">ID</th>
 					<td>
-						<input type="text" name="memberId" class="form-control">
+						<input type="text" name="memberId" class="form-control" required>
 					</td>
 				</tr>
 				<tr>
 					<th class="table-info text-center">비밀번호</th>
 					<td>
-						<input type="password" name="memberPw" class="form-control">
+						<input type="password" name="memberPw" class="form-control" required>
 					</td>
 				</tr>
 				<tr>
 					<th class="table-info text-center">비밀번호 확인</th>
 					<td>
-						<input type="password" name="memberPwCheck" class="form-control">
+						<input type="password" name="memberPwCheck" class="form-control" required>
 					</td>
 				</tr>
 				<tr>
 					<th class="table-info text-center">이름</th>
 					<td>
-						<input type="text" name="memberName" class="form-control">
+						<input type="text" name="memberName" class="form-control" required>
 					</td>
 				</tr>
 				<tr>
 					<th class="table-info text-center">닉네임</th>
 					<td>
-						<input type="text" name="nickName" class="form-control">
+						<input type="text" name="nickName" class="form-control" required>
 					</td>
 				</tr>
 			</table>

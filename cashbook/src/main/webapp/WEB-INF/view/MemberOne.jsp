@@ -14,6 +14,10 @@
 	Member member = (Member)request.getAttribute("member");
 %>
 	<h1 class="text-center">회원정보 상세보기</h1>
+	<div style="float:right">
+		<span class="text-primary">[<%=session.getAttribute("sessionMemberId")%>]</span>님 반갑습니다.
+		<a href="<%=request.getContextPath()%>/LogoutController" class="btn btn-outline-info btn-sm">로그아웃</a>
+	</div>
 	<a href="<%=request.getContextPath()%>/CashbookListByMonthController" class="btn btn-link text-info">가계부 돌아가기</a>
 	<table class="table">
 		<tr>	

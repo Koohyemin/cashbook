@@ -14,6 +14,10 @@
 <div class="container">
 	<br>
 	<h1 class="text-center">해시태그</h1>
+	<div style="float:right">
+		<a href="<%=request.getContextPath()%>/SelectMemberOneController?memberId=<%=session.getAttribute("sessionMemberId")%>">[<%=session.getAttribute("sessionMemberId")%>]</a>님 반갑습니다.
+		<a href="<%=request.getContextPath()%>/LogoutController" class="btn btn-outline-info btn-sm">로그아웃</a>
+	</div> <br><br>
 	<div style="float:left">
 		 <a href="<%=request.getContextPath()%>/CashbookListByMonthController" class="btn btn-link text-info">가계부 돌아가기</a>
 	</div>

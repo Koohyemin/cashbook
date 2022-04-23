@@ -41,6 +41,15 @@
 	</div>
 	<br><br>
 		<table class="table table-bordered">
+			<colgroup>
+				<col style="width:14%">
+				<col style="width:14%">
+				<col style="width:14%">
+				<col style="width:14%">
+				<col style="width:14%">
+				<col style="width:14%">
+				<col style="width:14%">
+			</colgroup>
 		 	<thead class="table-info text-center">
 		 		<tr>
 		 			<th class="text-danger">일</th>
@@ -76,7 +85,7 @@
 			 		%>
 			 						<td class="<%=c%>">
 			 							<%=i-startBlank%>
-			 							<a href="<%=request.getContextPath()%>/InsertCashbookController?y=<%=y%>&m=<%=m%>&d=<%=i-startBlank%>" class="btn btn-light text-info">입력</a>
+			 							<a href="<%=request.getContextPath()%>/InsertCashbookController?y=<%=y%>&m=<%=m%>&d=<%=i-startBlank%>" class="btn btn-light text-info float-right">입력</a> <br><br>
 			 							<div>
 			 									<%
 			 										// 해당 날짜의 cashbook 목록 출력

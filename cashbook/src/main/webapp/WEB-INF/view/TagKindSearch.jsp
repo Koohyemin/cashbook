@@ -15,6 +15,10 @@
 %>
 	<br>
 	<h1 class="text-center">[<%=kind%>] 해시태그</h1>
+	<div style="float:right">
+		<a href="<%=request.getContextPath()%>/SelectMemberOneController?memberId=<%=session.getAttribute("sessionMemberId")%>">[<%=session.getAttribute("sessionMemberId")%>]</a>님 반갑습니다.
+		<a href="<%=request.getContextPath()%>/LogoutController" class="btn btn-outline-info btn-sm">로그아웃</a>
+	</div>
 	<a href="<%=request.getContextPath()%>/TagController" class="btn btn-outline-info">tags</a><br><br>
 		<table class="table text-center">
 			<thead class="table-info">

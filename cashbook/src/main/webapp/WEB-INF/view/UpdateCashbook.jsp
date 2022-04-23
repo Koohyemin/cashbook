@@ -14,6 +14,10 @@
 <div class="container">
 	<br>
 	<h2 class="text-center">가계부 수정</h2>
+	<div style="float:right">
+		<a href="<%=request.getContextPath()%>/SelectMemberOneController?memberId=<%=session.getAttribute("sessionMemberId")%>">[<%=session.getAttribute("sessionMemberId")%>]</a>님 반갑습니다.
+		<a href="<%=request.getContextPath()%>/LogoutController" class="btn btn-outline-info btn-sm">로그아웃</a>
+	</div>
 	<a href="<%=request.getContextPath()%>/CashbookOneController?cashbookNo=<%=c.getCashbookNo()%>" class="btn btn-link">이전으로</a>
 	<form method="post" action="<%=request.getContextPath()%>/UpdateCashbookController">
 		<table class="table">

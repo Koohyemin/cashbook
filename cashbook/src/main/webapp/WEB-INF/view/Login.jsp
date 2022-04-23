@@ -10,18 +10,18 @@
 <div class="container">
 	<br>
 	<h1 class="text-center text-secondary">로그인</h1>
-	<form method="post" action="<%=request.getContextPath()%>/LoginController">
+	<form method="post" action="<%=request.getContextPath()%>/LoginController" class="was-validated">
 		<table class="table text-center">
 			<tr>
 				<th class="table-info">ID</th>
 				<td>
-					<input type="text" name="memberId" class="form-control">
+					<input type="text" name="memberId" class="form-control" placeholder="Enter ID" required>
 				</td>
 			</tr>
 			<tr>
 				<th class="table-info">비밀번호</th>
 				<td>
-					<input type="password" name="memberPw" class="form-control">
+					<input type="password" name="memberPw" class="form-control" placeholder="Enter password" required>
 				</td>
 			</tr>
 		</table>
