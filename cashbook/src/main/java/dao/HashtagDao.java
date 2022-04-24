@@ -9,16 +9,16 @@ public class HashtagDao {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sql = "SELECT t.tag tag, t.cnt cnt, RANK() over(ORDER BY t.cnt DESC) rank"
-					+ " FROM (SELECT cashbook_no, tag, COUNT(*) cnt"
-					+ "			FROM hashtag"
-					+ "			GROUP BY tag) t"
-					+ "				INNER JOIN ("
-					+ "					SELECT c.cashbook_no cashbookNo"
-					+ "					FROM cashbook c INNER JOIN member m"
-					+ "				ON m.member_id=c.member_id"
-					+ "			WHERE c.member_id=?) m"
-					+ "		ON t.cashbook_no = m.cashbookNo";
+		String sql = "SELECT b.tag tag, COUNT(*) cnt, RANK() over(ORDER BY cnt DESC) rank"
+					+ " FROM (SELECT c.cashbook_no cashbookNo, c.member_id memberId"
+					+ "		FROM cashbook c INNER JOIN member m"
+					+ "			ON m.member_id=c.member_id) a"
+					+ "				INNER JOIN (SELECT cashbook_no cashbookNo, tag"
+					+ "								FROM hashtag) b"
+					+ "					ON a.cashbookNo=b.cashbookNo"
+					+ " WHERE a.memberId=?"
+					+ " GROUP BY tag"
+					+ " ORDER BY RANK";
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");

@@ -85,7 +85,7 @@
 			 		%>
 			 						<td class="<%=c%>">
 			 							<%=i-startBlank%>
-			 							<a href="<%=request.getContextPath()%>/InsertCashbookController?y=<%=y%>&m=<%=m%>&d=<%=i-startBlank%>" class="btn btn-light text-info float-right">입력</a> <br><br>
+			 							<a href="<%=request.getContextPath()%>/InsertCashbookController?y=<%=y%>&m=<%=m%>&d=<%=i-startBlank%>" class="btn btn-light text-info float-right">입력</a> <hr><br>
 			 							<div>
 			 									<%
 			 										// 해당 날짜의 cashbook 목록 출력
@@ -93,7 +93,7 @@
 														if((Integer)map.get("cashDay") == (i-startBlank)) {
 												%>
 															<div>
-																<a href="<%=request.getContextPath()%>/CashbookOneController?cashbookNo=<%=map.get("cashbookNo")%>" class="text-body">
+																<a href="<%=request.getContextPath()%>/CashbookOneController?cashbookNo=<%=map.get("cashbookNo")%>" class="text-body" title="<%=map.get("fullMemo")%>">
 																<%
 																	if("수입".equals(map.get("kind"))) {
 																%>
@@ -109,7 +109,7 @@
 																	}
 																%>
 																		<%=map.get("cash")%>원
-																		<%=map.get("memo")%>...
+																		<%=map.get("shortMemo")%>...
 																</a>
 															</div>
 												<%

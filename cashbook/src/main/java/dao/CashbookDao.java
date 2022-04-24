@@ -25,7 +25,8 @@ public class CashbookDao {
 				+ "		, DAY(cash_date) cashDay"
 				+ "		, kind"
 				+ "		, cash"
-				+ "		, LEFT(memo,5) memo"
+				+ "		, LEFT(memo,5) shortMemo"
+				+ "		, memo fullMemo"
 				+"		, member_id memberId"
 				+ "	FROM cashbook"
 				+ "	WHERE YEAR(cash_date)=? AND MONTH(cash_date)=? AND member_id=?"
@@ -45,7 +46,8 @@ public class CashbookDao {
 				map.put("cashDay", rs.getInt("cashDay"));
 				map.put("kind", rs.getString("kind"));
 				map.put("cash", rs.getInt("cash"));
-				map.put("memo", rs.getString("memo"));
+				map.put("shortMemo", rs.getString("shortMemo"));
+				map.put("fullMemo", rs.getString("fullMemo"));
 				list.add(map);
 			}
 			
