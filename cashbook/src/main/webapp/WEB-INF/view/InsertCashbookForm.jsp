@@ -26,20 +26,20 @@
 			<tr>
 				<th class="table-info text-center">수입/지출</th>
 				<td>
-					<input type="radio" name="kind" value="수입"> 수입
+					<input type="radio" name="kind" value="수입" checked="checked"> 수입
 					<input type="radio" name="kind" value="지출"> 지출
 				</td>
 			</tr>
 			<tr>
 				<th class="table-info text-center">금액</th>
 				<td>
-					<input type="number" name="cash" class="form-control">
+					<input type="number" name="cash" class="form-control" placeholder="₩">
 				</td>
 			</tr>
 			<tr>
 				<th class="table-info text-center">메모</th>
 				<td>
-					<textarea rows="4" name=memo cols="50" class="form-control"></textarea>
+					<textarea rows="4" name=memo cols="50" class="form-control" placeholder="메모와 함께 #해시태그 방식으로 본인만의 해시태그를 기록해보세요!"></textarea>
 				</td>
 			</tr>
 		</table>

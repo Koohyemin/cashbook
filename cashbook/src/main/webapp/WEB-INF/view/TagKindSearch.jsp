@@ -20,28 +20,40 @@
 		<a href="<%=request.getContextPath()%>/LogoutController" class="btn btn-outline-info btn-sm">로그아웃</a>
 	</div>
 	<a href="<%=request.getContextPath()%>/TagController" class="btn btn-outline-info">tags</a><br><br>
-		<table class="table text-center">
-			<thead class="table-info">
-				<tr>
-					<th>순위</th>
-					<th>해시태그</th>
-					<th>개수</th>
-				</tr>
-			</thead>
-			<tbody>
-				<%
-					for(Map<String, Object> map : list) {
-				%>
-						<tr>
-							<td><%=map.get("rank")%></td>
-							<td><%=map.get("tag")%></td>
-							<td><%=map.get("cnt")%></td>
-						</tr>
-				<%
-					}
-				%>
-			</tbody>
-		</table>
+
+		<%
+			if(list.size()==0) {
+		%>
+				<br>
+				<h4 class="text-danger text-center">등록된 해시태그가 존재하지 않습니다.</h4>
+		<%
+			} else {
+		%>
+					<table class="table text-center">
+						<thead class="table-info">
+							<tr>
+								<th>순위</th>
+								<th>해시태그</th>
+								<th>개수</th>
+							</tr>
+						</thead>							
+						<tbody>
+							<%
+								for(Map<String,Object> map : list) {
+							%>
+									<tr>
+										<td><%=map.get("rank")%></td>
+										<td><%=map.get("tag")%></td>
+										<td><%=map.get("cnt")%></td>
+									</tr>
+							<%
+								}
+							%>
+						</tbody>
+					</table>
+		<%
+			}
+		%>
 </div>
 </body>
 </html>

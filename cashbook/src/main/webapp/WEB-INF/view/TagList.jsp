@@ -40,29 +40,40 @@
 		</div>
 	</form>
 	<br><br>
-	<!-- 해시태그 목록 -->
-	<table class="table text-center">
-		<thead class="table-info">
-			<tr>
-				<th>순위</th>
-				<th>해시태그</th>
-				<th>개수</th>
-			</tr>
-		</thead>
-		<tbody>
 			<%
-				for(Map<String,Object> map : list) {
+				if(list.size()==0) {
 			%>
-					<tr>
-						<td><%=map.get("rank")%></td>
-						<td><a href="<%=request.getContextPath()%>/TagOneController?tag=<%=map.get("tag")%>&tagCount=<%=map.get("cnt")%>"><%=map.get("tag")%></a></td>
-						<td><%=map.get("cnt")%></td>
-					</tr>
+					<br>
+					<h4 class="text-danger text-center">등록된 해시태그가 존재하지 않습니다.</h4>
+			<%
+				} else {
+			%>
+						<!-- 해시태그 목록 -->
+						<table class="table text-center">
+							<thead class="table-info">
+								<tr>
+									<th>순위</th>
+									<th>해시태그</th>
+									<th>개수</th>
+								</tr>
+							</thead>
+							<tbody>
+							<%
+								for(Map<String,Object> map : list) {
+							%>
+									<tr>
+										<td><%=map.get("rank")%></td>
+										<td><a href="<%=request.getContextPath()%>/TagOneController?tag=<%=map.get("tag")%>&tagCount=<%=map.get("cnt")%>"><%=map.get("tag")%></a></td>
+										<td><%=map.get("cnt")%></td>
+									</tr>
+							<%
+								}
+							%>
+							</tbody>
+						</table>
 			<%
 				}
 			%>
-		</tbody>
-	</table>
 </div>
 </body>
 </html>

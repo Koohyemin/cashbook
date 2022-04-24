@@ -49,6 +49,7 @@ public class LoginController extends HttpServlet {
 		// 로그인 성공
 		HttpSession session = request.getSession(); // 현재 연결한 클라이언트(브라우저)에 대하 세션값을 받아옴
 		session.setAttribute("sessionMemberId", returnMemberId);
+		System.out.println("[MemberId LoginController] : " + returnMemberId + "님이 로그인하셨습니다");
 		response.sendRedirect(request.getContextPath()+"/CashbookListByMonthController");
 	}
 }

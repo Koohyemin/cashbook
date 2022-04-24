@@ -43,13 +43,13 @@
 			<tr>
 				<th class="table-info text-center">금액</th>
 				<td>
-					<input type="number" name="cash"  value="<%=c.getCash()%>" class="form-control">
+					<input type="number" name="cash"  value="<%=c.getCash()%>" class="form-control" placeholder="₩">
 				</td>
 			</tr>
 			<tr>
 				<th class="table-info text-center">메모</th>
 				<td>
-					<textarea rows="4" name=memo cols="50" class="form-control"><%=c.getMemo()%></textarea>
+					<textarea rows="4" name=memo cols="50" class="form-control" placeholder="메모와 함께 #해시태그 방식으로 본인만의 해시태그를 기록해보세요!"><%=c.getMemo()%></textarea>
 				</td>
 			</tr>
 		</table>

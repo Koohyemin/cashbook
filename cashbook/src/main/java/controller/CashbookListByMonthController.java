@@ -27,7 +27,6 @@ public class CashbookListByMonthController extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/LoginController");
 			return;
 		}
-		System.out.println("[MemberId CashbookListByMonthController] : " + memberId + "님이 로그인하셨습니다");
 		
 		// 1) 월별 가계부 리스트 요청 분석
 		Calendar now = Calendar.getInstance();
