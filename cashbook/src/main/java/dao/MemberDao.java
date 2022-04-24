@@ -143,40 +143,48 @@ public class MemberDao {
 	public int deleteMember(String memberId, String memberPw) {
 		int row = 0;
 		Connection conn = null;
-		PreparedStatement stmt = null;
+		PreparedStatement stmt1 = null;
 		PreparedStatement stmt2 = null;
-		String cashbookSql = "DELETE FROM cashbook WHERE member_id=?"; // 고객관련 cashbook 데이터 삭제
-		String memberSql = "DELETE FROM member WHERE member_id=? AND member_pw=PASSWORD(?)"; // 고객정보 삭제
+		PreparedStatement stmt3 = null;
+		String hashtagSql = "DELETE h"
+				+ " FROM hashtag h INNER JOIN cashbook c"
+				+ "	ON h.cashbook_no=c.cashbook_no"
+				+ " WHERE c.member_id=?"; // 고객관련 해시태그 삭제
+		String cashbooksql = "DELETE FROM cashbook WHERE member_id=?"; // 고객 관련 캐시북 삭제
+		String memberSql = "DELETE FROM member WHERE member_id=? AND member_pw=PASSWORD(?)"; // 고객 정보 삭제
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
-			conn.setAutoCommit(false); // 자동 커밋 해제
-			// 고객관련 cashbook 데이터 삭제
-			stmt = conn.prepareStatement(cashbookSql);
-			stmt.setString(1, memberId);
-			stmt.executeUpdate();
-
-			// 고객정보 삭제
-			stmt2 = conn.prepareStatement(memberSql);
+			// 해시태그 삭제
+			stmt1 = conn.prepareStatement(hashtagSql);
+			stmt1.setString(1, memberId);
+			stmt1.executeUpdate();
+			// 가계부 삭제
+			stmt2 = conn.prepareStatement(cashbooksql);
 			stmt2.setString(1, memberId);
-			stmt2.setString(2, memberPw);
-			row = stmt2.executeUpdate();
-			if (row == 0) { // 삭제가 이뤄지지않았다면 rollback
-				conn.rollback();
-			} else { // 정상적으로 이뤄졌다면 commit
+			stmt2.executeUpdate();
+			// 고객정보 삭제
+			stmt3 = conn.prepareStatement(memberSql);
+			stmt3.setString(1, memberId);
+			stmt3.setString(2, memberPw);
+			row = stmt3.executeUpdate();
+			
+			if(row == 1) { // 고객정보가 삭제된다면 commit
 				conn.commit();
+			} else {
+				try { // 고객정보가 삭제되지않았다면 rollback
+					conn.rollback(); 
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				} 
 			}
 		} catch (Exception e) {
-			try {
-				conn.rollback();
-			} catch(SQLException e1) {
-				e1.printStackTrace();
-			}
 			e.printStackTrace();
 		} finally {
 			try {
+				stmt3.close();
 				stmt2.close();
-				stmt.close();
+				stmt1.close();
 				conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();

@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -41,21 +43,29 @@ public class DeleteMemberController extends HttpServlet {
 			return;
 		}
 		
-		// 회원 정보, 데이터 삭제
+		// 회원 정보, 데이터 삭제 정보 받아오기
 		String memberId = request.getParameter("memberId");
 		String memberPw = request.getParameter("memberPw");
+		
+		// 유효성 -> 공백값이 넘어올 시 정보상세보기로 넘어가기
+		if("".equals(request.getParameter("memberPw")) || request.getParameter("memberPw") == null) {
+			response.sendRedirect(request.getContextPath()+"/SelectMemberOneController?memberId="+memberId);
+			System.out.println("[DeleteMmeberController] : 회원탈퇴 실패, 비밀번호 공백");
+			return;
+		}
 		
 		MemberDao memberDao = new MemberDao();
 		int memberRow = memberDao.deleteMember(memberId, memberPw);
 		
 		if(memberRow == 1) {
-			System.out.println("회원정보, 데이터 삭제 성공");
+			System.out.println("[memberPw DeleteMemberController] : 회원 데이터 삭제 성공");
+			System.out.println("[memberPw DeleteMemberController] : 회원정보 삭제 성공");
 			response.sendRedirect(request.getContextPath()+"/LogoutController"); // 정보+데이터 삭제 후 로그아웃
-			
 		} else {
-			System.out.println("회원정보, 데이터 삭제 실패"); // 비밀번호 불일치 또는 다른 문제?
+			System.out.println("회원정보, 데이터 삭제 실패"); // 비밀번호 불일치, 또는 sql 오류
 			System.out.println("[memberPw DeleteMemberController] : " + memberPw);
 			response.sendRedirect(request.getContextPath()+"/SelectMemberOneController?memberId="+memberId);
 		}
+		
 	}
 }
