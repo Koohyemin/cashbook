@@ -6,10 +6,10 @@
 <title>InsertMember</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 </head>
-<body>
-	<div class="container">
+<body  class="table-info">
+	<div class="container" style="margin-top:8%;">
 		<br>
-		<h1 class="text-center">회원가입</h1>
+		<h1 class="text-center text-secondary">회원가입</h1>
 		<a href="<%=request.getContextPath()%>/LoginController" class="btn btn-link">로그인</a>
 		<form method="post" action="<%=request.getContextPath()%>/InsertMemberController" class="was-validated">
 			<table class="table">
