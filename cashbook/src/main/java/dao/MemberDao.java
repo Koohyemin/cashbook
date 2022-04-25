@@ -155,6 +155,7 @@ public class MemberDao {
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
+			conn.setAutoCommit(false);
 			// 해시태그 삭제
 			stmt1 = conn.prepareStatement(hashtagSql);
 			stmt1.setString(1, memberId);
