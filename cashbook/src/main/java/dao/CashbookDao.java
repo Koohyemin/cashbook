@@ -187,6 +187,7 @@ public class CashbookDao {
 			e.printStackTrace();
 		} finally {
 			try {
+				stmt2.close();
 				stmt.close();
 				conn.close();
 			} catch (SQLException e) {
