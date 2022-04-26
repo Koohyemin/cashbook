@@ -55,8 +55,8 @@
 		<div>
 			<button type="submit" class="btn btn-info float-right">수정</button>
 		</div>
-		<div>
-			<input type="password" name="originalCheckPw" placeholder="수정을 위해 기존비밀번호를 입력해주세요." class="form-control col-sm-4 float-right">
+		<div class="was-validated">
+			<input type="password" name="originalCheckPw" placeholder="수정을 위해 기존비밀번호를 입력해주세요." class="form-control col-sm-4 float-right" required>
 		</div>
 	</form>
 </div>

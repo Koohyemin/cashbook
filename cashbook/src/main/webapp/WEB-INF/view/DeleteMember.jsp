@@ -18,7 +18,7 @@
 		<a href="<%=request.getContextPath()%>/LogoutController" class="btn btn-outline-info btn-sm">로그아웃</a>
 	</div>
 	<a href="<%=request.getContextPath()%>/SelectMemberOneController?memberId=<%=memeberId%>" class="btn btn-link text-info">정보 상세보기</a>
-	<form method="post" action="<%=request.getContextPath()%>/DeleteMemberController">
+	<form method="post" action="<%=request.getContextPath()%>/DeleteMemberController" class="was-validated">
 		<table class="table">
 			<tr>
 				<th class="table-info text-center">ID</th>
@@ -29,7 +29,7 @@
 			<tr>
 				<th class="table-info text-center">비밀번호</th>
 				<td>
-					<input type="password" name="memberPw" class="form-control">
+					<input type="password" name="memberPw" class="form-control" required>
 				</td>
 			</tr>
 		</table>
