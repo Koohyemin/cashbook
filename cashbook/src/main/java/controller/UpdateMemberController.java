@@ -86,9 +86,9 @@ public class UpdateMemberController extends HttpServlet {
 			nullcheck = true;
 		}
 				
-		// 빈값이 있거나, 기존 비밀번호 불일치시, 정보 상세보기 페이지로 돌아가기
+		// 빈값이 있거나, 기존 비밀번호 불일치시, 다시 정보수정폼으로 돌아가기
 		if(nullcheck == true) {
-			response.sendRedirect(request.getContextPath() + "/SelectMemberOneController?memberId="+memberId);
+			response.sendRedirect(request.getContextPath() + "/UpdateMemberController?memberId="+memberId);
 			return;
 		}
 		

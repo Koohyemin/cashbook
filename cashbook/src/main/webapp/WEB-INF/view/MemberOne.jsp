@@ -40,6 +40,7 @@
 	<div class="float-right">
 		<a href="<%=request.getContextPath()%>/DeleteMemberController?memberId=<%=member.getMemberId()%>" class="btn btn-secondary">회원탈퇴</a>
 		<a href="<%=request.getContextPath()%>/UpdateMemberController?memberId=<%=member.getMemberId()%>" class="btn btn-info">정보수정</a>
+		<a href="<%=request.getContextPath()%>/UpdateMemberPwController?memberId=<%=member.getMemberId()%>" class="btn btn-info">비밀번호 수정</a>
 	</div>
 </div>
 </body>
