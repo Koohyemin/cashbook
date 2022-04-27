@@ -114,7 +114,7 @@ public class MemberDao {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		// 기존 비밀번호랑 일치하지않다면 update되지않음
-		String sql = "UPDATE member SET member_name=?, nick_name=?, member_pw=PASSWORD(?)"
+		String sql = "UPDATE member SET member_name=?, nick_name=?"
 					+ " WHERE member_id=? AND member_pw=PASSWORD(?)";
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
@@ -122,7 +122,6 @@ public class MemberDao {
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, member.getMemberName());
 			stmt.setString(2, member.getNickName());
-			stmt.setString(3, member.getMemberPw());
 			stmt.setString(4, member.getMemberId());
 			stmt.setString(5, originalCheckPw);
 			row = stmt.executeUpdate();
@@ -186,6 +185,35 @@ public class MemberDao {
 				stmt3.close();
 				stmt2.close();
 				stmt1.close();
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return row;
+	}
+	// 비밀번호 수정
+	public int updateMemberPw(String memberPw, String memberId, String originalCheckPw) {
+		int row = 0;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		// 기존 비밀번호랑 일치하지않다면 update되지않음
+		String sql = "UPDATE member SET member_pw=PASSWORD(?)"
+					+ " WHERE member_id=? AND member_pw=PASSWORD(?)";
+		try {
+			Class.forName("org.mariadb.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, memberPw);
+			stmt.setString(2, memberId);
+			stmt.setString(3, originalCheckPw);
+			row = stmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
 				conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();

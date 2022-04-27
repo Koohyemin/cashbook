@@ -14,7 +14,7 @@
 		<a href="<%=request.getContextPath()%>/SelectMemberOneController?memberId=<%=session.getAttribute("sessionMemberId")%>">[<%=session.getAttribute("sessionMemberId")%>]</a>님 반갑습니다.
 		<a href="<%=request.getContextPath()%>/LogoutController" class="btn btn-outline-info btn-sm">로그아웃</a>
 	</div>
-	<a href="<%=request.getContextPath()%>/CashbookListByMonthController" class="btn btn-link text-info">가계부 돌아가기</a>
+	<a href="<%=request.getContextPath()%>/SelectMemberOneController?memberId=<%=request.getAttribute("memberId")%>" class="btn btn-link text-info">정보 상세보기</a>
 	<form method="post" action="<%=request.getContextPath()%>/UpdateMemberPwController">
 		<table class="table">
 			<tr>

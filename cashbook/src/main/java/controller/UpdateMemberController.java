@@ -48,8 +48,6 @@ public class UpdateMemberController extends HttpServlet {
 		String memberId = request.getParameter("memberId");
 		String memberName = request.getParameter("memberName");
 		String nickName = request.getParameter("nickName");
-		String memberPw = request.getParameter("memberPw"); // 변경할 비밀번호
-		String memberPwCheck = request.getParameter("memberPwCheck"); // 변경할 비밀번호 확인
 		
 		String originalCheckPw = request.getParameter("originalCheckPw"); // 수정을 위한 기존 비밀번호
 		
@@ -58,7 +56,6 @@ public class UpdateMemberController extends HttpServlet {
 		member.setMemberId(memberId);
 		member.setMemberName(memberName);
 		member.setNickName(nickName);
-		member.setMemberPw(memberPw);
 	
 		System.out.println("[UpdateMemberController]" + member);
 		
@@ -68,8 +65,6 @@ public class UpdateMemberController extends HttpServlet {
 		List<String> list = new ArrayList<String>();
 		list.add(memberName);
 		list.add(nickName);
-		list.add(memberPw);
-		list.add(memberPwCheck);
 		list.add(originalCheckPw);
 		
 		for(String s : list) { // 비어있는 값이 있다면 true
@@ -79,12 +74,6 @@ public class UpdateMemberController extends HttpServlet {
 				break;
 			}
 		}
-		if(!memberPw.equals(memberPwCheck)) { // memberPw와 memberPwCheck값이 다르다면 true
-			System.out.println("[UpdateMemberController] : 정보 수정 실패, 수정비밀번호 확인 불일치");
-			System.out.println("[memberPw UpdateMemberController]" + memberPw);
-			System.out.println("[memberPwCheck UpdateMemberController]" + memberPwCheck);
-			nullcheck = true;
-		}
 				
 		// 빈값이 있거나, 기존 비밀번호 불일치시, 다시 정보수정폼으로 돌아가기
 		if(nullcheck == true) {
@@ -92,7 +81,7 @@ public class UpdateMemberController extends HttpServlet {
 			return;
 		}
 		
-		// 수정 insert 메서드
+		// 수정 메서드
 		MemberDao memberDao = new MemberDao();
 		int row = memberDao.updateMember(member, originalCheckPw); // originalCheckPw가 일치하지 않다면 sql문 WHERE절에서 조건불충족으로 INSERT 실패
 		
