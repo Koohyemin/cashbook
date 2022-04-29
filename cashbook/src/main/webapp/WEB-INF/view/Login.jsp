@@ -10,18 +10,25 @@
 <div class="container" style="margin-top:10%;">
 	<br>
 	<h1 class="text-center text-secondary">로그인</h1>
-	<form method="post" action="<%=request.getContextPath()%>/LoginController" class="was-validated">
+	<%
+		String msg = (String)request.getAttribute("msg");	
+		if(msg == null) {
+			msg = "";
+		}
+	%>
+	<div class="text-danger"><%=msg%></div>
+	<form method="post" action="<%=request.getContextPath()%>/LoginController">
 		<table class="table text-center">
 			<tr>
 				<th>ID</th>
 				<td>
-					<input type="text" name="memberId" class="form-control" placeholder="Enter ID" required>
+					<input type="text" name="memberId" class="form-control">
 				</td>
 			</tr>
 			<tr>
 				<th>비밀번호</th>
 				<td>
-					<input type="password" name="memberPw" class="form-control" placeholder="Enter password" required>
+					<input type="password" name="memberPw" class="form-control">
 				</td>
 			</tr>
 		</table>

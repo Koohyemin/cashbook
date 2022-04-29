@@ -25,14 +25,34 @@ public class LoginController extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/CashbookListByMonthController");
 			return;
 		}
+		
+		// 유효성 메세지
+		String msg = "";
+		
+		if(!"".equals(request.getParameter("msg"))) {
+			msg = request.getParameter("msg");
+		}
+		
+		request.setAttribute("msg", msg);
+		
 		// 로그인 되어있는 멤버면 리다이렉트
 		request.getRequestDispatcher("WEB-INF/view/Login.jsp").forward(request, response);
 	}
 	// 로그인 액션
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 로그인 되어있는 멤버라면 리다이렉트
+		// 로그인 정보 받아오기
 		String memberId = request.getParameter("memberId");
 		String memberPw = request.getParameter("memberPw");
+		
+		// 유효성
+		if("".equals(memberId)) {
+			response.sendRedirect(request.getContextPath()+"/LoginController?msg=Please input ID");
+			return;
+		} else if("".equals(memberPw)) {
+			response.sendRedirect(request.getContextPath()+"/LoginController?msg=Please input PW");
+			return;
+		}
+		
 		Member member = new Member();
 		member.setMemberId(memberId);
 		member.setMemberPw(memberPw);
