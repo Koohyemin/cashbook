@@ -25,6 +25,15 @@ public class InsertMemberController extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/CashbookListByMonthController");
 			return;
 		}
+		// 유효성 메세지
+		String msg = "";
+		
+		if(!"".equals(request.getParameter("msg"))) {
+			msg = request.getParameter("msg");
+		}
+		
+		request.setAttribute("msg", msg);
+		
 		request.getRequestDispatcher("WEB-INF/view/InsertMember.jsp").forward(request, response);
 	}
 
@@ -54,27 +63,31 @@ public class InsertMemberController extends HttpServlet {
 		list.add(memberName);
 		list.add(nickName);
 		
-		boolean nullcheck = false; // 공백값이 없다면 false
-		
-		// 공백값이 있다면 true로 변경 -> 회원가입 실패
+		// 공백값이 있다면 -> 회원가입 실패
 		for(String s : list) {
 			if(s == null || "".equals(s)) {
-				nullcheck = true;
 				System.out.println("[InsertMemberController] : 회원가입 실패, 공백값");
-				break;
+				response.sendRedirect(request.getContextPath() + "/InsertMemberController?msg=Member registration failed : Required input value is empty");
+				return;
 			}
 		}
-		// memberPw와 memberPw가 같지않다면 true로 변경 -> 회원가입 실패
-		if(!memberPw.equals(memberPwCheck)) {
-			nullcheck = true;
-			System.out.println("[InsertMemberController] : 회원가입 실패, 비밀번호 확인 불일치");
+		// 이미 있는 ID라면 -> 회원가입 실패
+		MemberDao memberDao = new MemberDao();
+		List<String> memberIdList = memberDao.memberIdList();
+		for(String s : memberIdList) {
+			if(s.equals(memberId)) {
+				System.out.println("[InsertMemberController] : 회원가입 실패, 이미 존재하는 ID");
+				response.sendRedirect(request.getContextPath() + "/InsertMemberController?msg=Member registration failed : duplicate ID");
+				return;
+			}
 		}
-		
-		// 회원가입 실패시 회원가입 페이지로 돌아가기
-		if(nullcheck == true) {
-			response.sendRedirect(request.getContextPath() + "/InsertMemberController");
+		// memberPw와 memberPw가 같지않다면 -> 회원가입 실패
+		if(!memberPw.equals(memberPwCheck)) {
+			System.out.println("[InsertMemberController] : 회원가입 실패, 비밀번호 확인 불일치");
+			response.sendRedirect(request.getContextPath() + "/InsertMemberController?msg=Member registration failed : password check mismatch");
 			return;
 		}
+		
 		
 		// Member로 묶어주기
 		Member member = new Member();
@@ -83,7 +96,7 @@ public class InsertMemberController extends HttpServlet {
 		member.setMemberName(memberName);
 		member.setNickName(nickName);
 		
-		MemberDao memberDao = new MemberDao();
+		
 		memberDao.insertMember(member);
 		
 		// 가입 완료 후 로그인 페이지로 돌아가기

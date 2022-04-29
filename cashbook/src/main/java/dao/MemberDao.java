@@ -221,4 +221,24 @@ public class MemberDao {
 		}
 		return row;
 	}
+	// memberId 조회 -> 중복 아이디 회원가입 막기
+	public List<String> memberIdList() {
+		List<String> list = new ArrayList<String>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT member_id memberId FROM member";
+		try {
+			Class.forName("org.mariadb.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
+			stmt = conn.prepareStatement(sql);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				list.add(rs.getString("memberId"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 }
