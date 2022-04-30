@@ -122,8 +122,8 @@ public class MemberDao {
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, member.getMemberName());
 			stmt.setString(2, member.getNickName());
-			stmt.setString(4, member.getMemberId());
-			stmt.setString(5, originalCheckPw);
+			stmt.setString(3, member.getMemberId());
+			stmt.setString(4, originalCheckPw);
 			row = stmt.executeUpdate();
 			
 		} catch (Exception e) {

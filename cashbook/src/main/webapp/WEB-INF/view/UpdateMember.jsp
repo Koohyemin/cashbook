@@ -19,6 +19,13 @@
 		<a href="<%=request.getContextPath()%>/LogoutController" class="btn btn-outline-info btn-sm">로그아웃</a>
 	</div>
 	<a href="<%=request.getContextPath()%>/SelectMemberOneController?memberId=<%=member.getMemberId()%>" class="btn btn-link text-info">정보 상세보기</a>
+	<%
+		String msg = "";
+		if((String)request.getAttribute("msg") != null) {
+			msg = (String)request.getAttribute("msg");
+		}
+	%>
+	<div class="text-danger"><%=msg%></div>
 	<form method="post" action="<%=request.getContextPath()%>/UpdateMemberController">
 		<table class="table">
 			<tr>

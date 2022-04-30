@@ -46,10 +46,10 @@ public class LoginController extends HttpServlet {
 		
 		// 유효성
 		if("".equals(memberId)) {
-			response.sendRedirect(request.getContextPath()+"/LoginController?msg=Please input ID");
+			response.sendRedirect(request.getContextPath()+"/LoginController?msg=login fail : input ID");
 			return;
 		} else if("".equals(memberPw)) {
-			response.sendRedirect(request.getContextPath()+"/LoginController?msg=Please input PW");
+			response.sendRedirect(request.getContextPath()+"/LoginController?msg=login fail : input PW");
 			return;
 		}
 		

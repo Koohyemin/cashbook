@@ -32,10 +32,17 @@ public class UpdateCashbookController extends HttpServlet {
 		Cashbook cashbook = new Cashbook();
 		cashbook = cashbookDao.selectCashBookOne(cashbookNo); 
 		
-		System.out.println("[cashbookNo UpdateCashbookController] : " + cashbookNo);	
+		System.out.println("[cashbookNo UpdateCashbookController] : " + cashbookNo);
+		
+		// 받아온 메시지 값 대입
+		String msg = null;
+		if(!"".equals(request.getParameter("msg")) || msg != null) {
+			msg = request.getParameter("msg");
+		}
 		
 		request.setAttribute("cashbookNo", cashbookNo);
 		request.setAttribute("cashbook", cashbook);
+		request.setAttribute("msg", msg);
 		
 		request.getRequestDispatcher("/WEB-INF/view/UpdateCashbook.jsp").forward(request, response);
 	}
@@ -56,10 +63,11 @@ public class UpdateCashbookController extends HttpServlet {
 		
 		// 유효성 검사 (kind는 checked로 기본값 속성 적용) -> 해당 수정폼으로 돌아가기
 		String[] nullcheck = {request.getParameter("cash"), request.getParameter("memo")};
-		for(String s : nullcheck) {
-			if("".equals(s) || s == null) {
+		String[] nullMemo = {"cash","memo"};
+		for(int i=0; i<nullcheck.length; i++) {
+			if("".equals(nullcheck[i]) || nullcheck[i] == null) {
 				System.out.println("[UpdateCashbookController] : 가계부 수정 실패, 공백값 존재");
-				response.sendRedirect(request.getContextPath()+"/UpdateCashbookController?cashbookNo="+request.getParameter("cashbookNo"));
+				response.sendRedirect(request.getContextPath()+"/UpdateCashbookController?cashbookNo="+request.getParameter("cashbookNo")+"&msg=fail update : input "+nullMemo[i]);
 				return;
 			}
 		}

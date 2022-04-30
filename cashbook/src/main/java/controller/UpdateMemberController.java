@@ -30,6 +30,15 @@ public class UpdateMemberController extends HttpServlet {
 		String memberId = request.getParameter("memberId");
 		MemberDao memberDao = new MemberDao();
 		Member member = memberDao.selectMemberOne(memberId);
+		
+		// 유효성 메세지
+		String msg = "";
+		
+		if(!"".equals(request.getParameter("msg"))) {
+			msg = request.getParameter("msg");
+		}
+		
+		request.setAttribute("msg", msg);
 		request.setAttribute("member", member);
 		request.getRequestDispatcher("/WEB-INF/view/UpdateMember.jsp").forward(request, response);
 	}
@@ -59,27 +68,30 @@ public class UpdateMemberController extends HttpServlet {
 	
 		System.out.println("[UpdateMemberController]" + member);
 		
+
 		// 유효성 체크
-		boolean nullcheck = false; 
+		List<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
+		// memberName
+		HashMap<String,Object> map = new HashMap<String,Object>();
+		map.put("inputValue", memberName);
+		map.put("msg", "name");
+		list.add(map);
 		
-		List<String> list = new ArrayList<String>();
-		list.add(memberName);
-		list.add(nickName);
-		list.add(originalCheckPw);
+		// nickname
+		map = new HashMap<String,Object>();
+		map.put("inputValue", nickName);
+		map.put("msg", "nickname");
+		list.add(map);
 		
-		for(String s : list) { // 비어있는 값이 있다면 true
-			if(s==null || "".equals(s)) {
-				System.out.println("[UpdateMemberController] : 정보 수정 실패, 공백값");
-				nullcheck = true;
-				break;
+		for(HashMap<String,Object> m : list) {
+			if("".equals(m.get("inputValue")) || null == m.get("inputValue")) {
+				System.out.println("[UpdateMemberController] : 정보수정 실패, 공백값 존재");
+				response.sendRedirect(request.getContextPath()+"/UpdateMemberController?memberId="+memberId+"&msg=fail update meber info : input "+m.get("msg"));
+				return;
 			}
 		}
-				
-		// 빈값이 있거나, 기존 비밀번호 불일치시, 다시 정보수정폼으로 돌아가기
-		if(nullcheck == true) {
-			response.sendRedirect(request.getContextPath() + "/UpdateMemberController?memberId="+memberId);
-			return;
-		}
+
+	
 		
 		// 수정 메서드
 		MemberDao memberDao = new MemberDao();
@@ -90,7 +102,7 @@ public class UpdateMemberController extends HttpServlet {
 			response.sendRedirect(request.getContextPath()+"/SelectMemberOneController?memberId="+memberId);
 		} else {
 			System.out.println("회원정보 수정 실패"); // 기존 비밀번호 불일치 또는 다른 문제?
-			response.sendRedirect(request.getContextPath()+"/UpdateMemberController?memberId="+memberId);
+			response.sendRedirect(request.getContextPath()+"/UpdateMemberController?memberId="+memberId+"&msg=fail update meber info : PW mismatch");
 		}
 	}
 }

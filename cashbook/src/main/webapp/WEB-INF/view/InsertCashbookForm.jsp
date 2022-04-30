@@ -15,6 +15,13 @@
 		<a href="<%=request.getContextPath()%>/LogoutController" class="btn btn-outline-info btn-sm">로그아웃</a>
 	</div>
 	<a href="<%=request.getContextPath()%>/CashbookListByMonthController" class="btn btn-link">가계부</a>
+	<%
+		String msg = "";
+		if((String)request.getAttribute("msg")!=null) {
+			msg = request.getParameter("msg");
+		}
+	%>
+	<div class="text-danger"><%=msg%></div>
 	<form method="post" action="<%=request.getContextPath()%>/InsertCashbookController">
 		<table class="table">
 			<tr>

@@ -38,7 +38,14 @@ public class InsertCashbookController extends HttpServlet {
 			cashDate = request.getParameter("returnCashDate");
 		}
 		
+		// 받아온 메시지 값 대입
+		String msg = null;
+		if(!"".equals(request.getParameter("msg")) || msg != null) {
+			msg = request.getParameter("msg");
+		}
+		
 		request.setAttribute("cashDate", cashDate);
+		request.setAttribute("msg", msg);
 		request.getRequestDispatcher("/WEB-INF/view/InsertCashbookForm.jsp").forward(request, response);
 	}
 
@@ -55,14 +62,15 @@ public class InsertCashbookController extends HttpServlet {
 			return;
 		}
 		
-		// 유효성 검사 (kind는 checked로 기본값 속성 적용) -> 해당날짜 입력폼으로 돌아가기
+		// 유효성 검사 (kind는 checked로 기본값 속성 적용) -> 해당날짜 입력폼으로 돌아가기+실패메시지
 		String[] nullcheck = {request.getParameter("cash"), request.getParameter("memo")};
-		for(String s : nullcheck) {
-			if("".equals(s) || s == null) {
-				System.out.println("[UpdateCashbookController] : 가계부 입력 실패, 공백값 존재");
-				response.sendRedirect(request.getContextPath()+"/InsertCashbookController?returnCashDate="+request.getParameter("cashDate"));
-				return;
-			}
+		String[] nullMemo = {"cash","memo"};
+		for(int i=0; i<nullcheck.length; i++) {
+				if("".equals(nullcheck[i]) || nullcheck[i] == null) {
+					System.out.println("[UpdateCashbookController] : 가계부 입력 실패, 공백값 존재");
+					response.sendRedirect(request.getContextPath()+"/InsertCashbookController?returnCashDate="+request.getParameter("cashDate")+"&msg=fail insert : input "+nullMemo[i]);
+					return;
+				}
 		}
 		
 		String cashDate = request.getParameter("cashDate");

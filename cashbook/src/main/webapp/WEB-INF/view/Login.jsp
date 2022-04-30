@@ -22,13 +22,13 @@
 			<tr>
 				<th>ID</th>
 				<td>
-					<input type="text" name="memberId" class="form-control">
+					<input type="text" name="memberId" class="form-control" placeholder="Enter ID">
 				</td>
 			</tr>
 			<tr>
 				<th>비밀번호</th>
 				<td>
-					<input type="password" name="memberPw" class="form-control">
+					<input type="password" name="memberPw" class="form-control" placeholder="Enter PW ">
 				</td>
 			</tr>
 		</table>

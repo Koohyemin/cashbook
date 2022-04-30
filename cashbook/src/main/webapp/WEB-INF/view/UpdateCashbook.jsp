@@ -19,6 +19,13 @@
 		<a href="<%=request.getContextPath()%>/LogoutController" class="btn btn-outline-info btn-sm">로그아웃</a>
 	</div>
 	<a href="<%=request.getContextPath()%>/CashbookOneController?cashbookNo=<%=c.getCashbookNo()%>" class="btn btn-link">이전으로</a>
+	<%
+		String msg = "";
+		if((String)request.getAttribute("msg")!=null) {
+			msg = request.getParameter("msg");
+		}
+	%>
+	<div class="text-danger"><%=msg%></div>
 	<form method="post" action="<%=request.getContextPath()%>/UpdateCashbookController">
 		<table class="table">
 			<tr>

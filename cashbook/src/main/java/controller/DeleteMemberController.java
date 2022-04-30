@@ -26,9 +26,13 @@ public class DeleteMemberController extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/LoginController");
 			return;
 		}
-		
+		String msg = "";
+		if(!"".equals("msg") || msg != null) {
+			msg = request.getParameter("msg");
+		}
 		String memberId = request.getParameter("memberId");
 		request.setAttribute("memberId", memberId);
+		request.setAttribute("msg", msg);
 		request.getRequestDispatcher("/WEB-INF/view/DeleteMember.jsp").forward(request, response);
 	}
 
@@ -49,7 +53,7 @@ public class DeleteMemberController extends HttpServlet {
 		
 		// 유효성 -> 공백값이 넘어올 시 정보상세보기로 넘어가기
 		if("".equals(request.getParameter("memberPw")) || request.getParameter("memberPw") == null) {
-			response.sendRedirect(request.getContextPath()+"/SelectMemberOneController?memberId="+memberId);
+			response.sendRedirect(request.getContextPath()+"/DeleteMemberController?memberId="+memberId+"&msg=fail delete account : input PW");
 			System.out.println("[DeleteMmeberController] : 회원탈퇴 실패, 비밀번호 공백");
 			return;
 		}
@@ -64,8 +68,8 @@ public class DeleteMemberController extends HttpServlet {
 		} else {
 			System.out.println("회원정보, 데이터 삭제 실패"); // 비밀번호 불일치, 또는 sql 오류
 			System.out.println("[memberPw DeleteMemberController] : " + memberPw);
-			response.sendRedirect(request.getContextPath()+"/SelectMemberOneController?memberId="+memberId);
+			response.sendRedirect(request.getContextPath()+"/DeleteMemberController?memberId="+memberId+"&msg=fail delete account : PW mismatch");
+			return;
 		}
-		
 	}
 }

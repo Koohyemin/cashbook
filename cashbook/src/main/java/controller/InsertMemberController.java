@@ -25,6 +25,7 @@ public class InsertMemberController extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/CashbookListByMonthController");
 			return;
 		}
+		
 		// 유효성 메세지
 		String msg = "";
 		
@@ -63,14 +64,6 @@ public class InsertMemberController extends HttpServlet {
 		list.add(memberName);
 		list.add(nickName);
 		
-		// 공백값이 있다면 -> 회원가입 실패
-		for(String s : list) {
-			if(s == null || "".equals(s)) {
-				System.out.println("[InsertMemberController] : 회원가입 실패, 공백값");
-				response.sendRedirect(request.getContextPath() + "/InsertMemberController?msg=Member registration failed : Required input value is empty");
-				return;
-			}
-		}
 		// 이미 있는 ID라면 -> 회원가입 실패
 		MemberDao memberDao = new MemberDao();
 		List<String> memberIdList = memberDao.memberIdList();
@@ -81,6 +74,17 @@ public class InsertMemberController extends HttpServlet {
 				return;
 			}
 		}
+		
+		// 공백값이 있다면 -> 회원가입 실패
+		for(String s : list) {
+			if(s == null || "".equals(s)) {
+				System.out.println("[InsertMemberController] : 회원가입 실패, 공백값");
+				response.sendRedirect(request.getContextPath() + "/InsertMemberController?msg=Member registration failed : Required input value is empty");
+				return;
+			}
+		}
+		
+		
 		// memberPw와 memberPw가 같지않다면 -> 회원가입 실패
 		if(!memberPw.equals(memberPwCheck)) {
 			System.out.println("[InsertMemberController] : 회원가입 실패, 비밀번호 확인 불일치");
