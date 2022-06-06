@@ -90,6 +90,28 @@ public class CashbookListByMonthController extends HttpServlet {
 		
 		// 달력출력에 필요한 모델값(1),2),3),4)) + 데이터베이스에서 반환된 모델값(list, y출력 연도, m출력 월)
 		
+		// 고객별 매월 수입, 지출 합계 메서드
+		List<Map<String, Object>> totalMonthCash = cashbookDao.totalMonthCash(memberId, y, m);
+		int income = 0; // 수입
+		int expense = 0; // 지출
+		
+		if(totalMonthCash.size() > 0) { // list 사이즈가 1개라도 있다면 아래 코드 실행
+			for(Map<String, Object> map : totalMonthCash) {
+				if(map.get("kind").equals("수입")) {
+					income = (Integer)map.get("totalCash");
+				} else if(map.get("kind").equals("지출")) {
+					expense = (Integer)map.get("totalCash");
+				}
+			}
+		}
+
+		int totalCash = income - expense; // 수입 - 지출 총 합계
+		
+		System.out.println("[income CashbookListByMonthController] : " + income);
+		System.out.println("[expense CashbookListByMonthController] : " + expense);
+		System.out.println("[totalCash CashbookListByMonthController] : " + totalCash);
+		
+		
 		// 달력출력에 필요한 모델값(startBlank, endDay, endBlank, totalTd)
 		request.setAttribute("startBlank", startBlank);
 		request.setAttribute("endDay", endDay);
@@ -99,6 +121,11 @@ public class CashbookListByMonthController extends HttpServlet {
 		request.setAttribute("list", list);
 		request.setAttribute("y", y);
 		request.setAttribute("m", m);
+		
+		// 월별 수입, 지출별 합계, 수입-지출 총합
+		request.setAttribute("income", income);
+		request.setAttribute("expense", expense);
+		request.setAttribute("totalCash", totalCash);
 		
 		// 3) 뷰 포워딩
 		request.getRequestDispatcher("/WEB-INF/view/CashbookListByMonth.jsp").forward(request, response);

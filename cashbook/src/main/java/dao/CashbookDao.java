@@ -1,25 +1,50 @@
 package dao;
 
 import java.util.*;
+
+import util.DBUtil;
+
 import java.sql.*;
 import vo.*;
 
 public class CashbookDao {
-	public List<Map<String, Object>> selectCashbookListByMonth(int y, int m, String memberId) {
-		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-		
-		/*
-		 	SELECT cashbook_no cashbookNo,
-		 		   DAY(cash_date) cashDay,
-		 		   kind,
-		 		   cash
-		 	FROM cashbook
-		 	WHERE YEAR(cash_date)=? AND MONTH(cash_date)=?
-		 	ORDER BY DAY(cash_date) ASC
-		 */
+	// 고객별 매월 수입, 지출 합계 메서드
+	public List<Map<String,Object>> totalMonthCash(String memberId, int y, int m) {
+		List<Map<String,Object>> list = new ArrayList<>();
+		Map<String,Object> map = null;
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
+		conn = DBUtil.getConnection();
+
+		String sql = "		SELECT kind, SUM(cash) totalCash"
+				+ "		FROM cashbook"
+				+ "		WHERE member_id=? AND YEAR(cash_date)=? AND MONTH(cash_date)=?"
+				+ "		GROUP BY kind";
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, memberId);
+			stmt.setInt(2, y);
+			stmt.setInt(3, m);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				map = new HashMap<>();
+				map.put("kind", rs.getString("kind"));
+				map.put("totalCash", rs.getInt("totalCash"));
+				list.add(map);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public List<Map<String, Object>> selectCashbookListByMonth(int y, int m, String memberId) {
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		conn = DBUtil.getConnection();
 		String sql = "SELECT "
 				+ "		 cashbook_no cashbookNo"
 				+ "		, DAY(cash_date) cashDay"
@@ -33,8 +58,6 @@ public class CashbookDao {
 				+ " ORDER BY DAY(cash_date) ASC, kind ASC";
 		
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, y);
 			stmt.setInt(2, m);
@@ -69,10 +92,8 @@ public class CashbookDao {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		
+		conn = DBUtil.getConnection();
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
 			conn.setAutoCommit(false); // 자동커밋을 해제
 			
 			String insertSql = "INSERT INTO cashbook(cash_date, kind, cash, memo, member_id, update_date, create_date)"
@@ -124,10 +145,10 @@ public class CashbookDao {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
+		conn = DBUtil.getConnection();
 		String sql = "SELECT cashbook_no cashbookNo, cash_date cashDate, kind, cash, memo, update_date updateDate, create_date createDate FROM cashbook WHERE cashbook_no=?";
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
+			conn = DBUtil.getConnection();
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, cashbookNo);
 			rs = stmt.executeQuery();
@@ -157,11 +178,10 @@ public class CashbookDao {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		PreparedStatement stmt2 = null;
+		conn = DBUtil.getConnection();
 		String hashtagSql = "DELETE FROM hashtag WHERE cashbook_no=?";
 		String cashbooksql = "DELETE FROM cashbook WHERE cashbook_no=?";
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
 			conn.setAutoCommit(false);
 			// 해시태그 삭제
 			stmt = conn.prepareStatement(hashtagSql);
@@ -200,12 +220,11 @@ public class CashbookDao {
 		PreparedStatement stmt1 = null;
 		PreparedStatement stmt2 = null;
 		PreparedStatement stmt3 = null;
+		conn = DBUtil.getConnection();
 		String deleteHashtagSql = "DELETE FROM hashtag WHERE cashbook_no=?"; // 해시태그 삭제
 		String updateSql = "UPDATE cashbook SET kind = ?, cash = ?, memo = ?, update_date = NOW() WHERE cashbook_no = ?"; // 업데이트 등록
 		String hashtagSql = "INSERT INTO hashtag(cashbook_no,tag,create_date) VALUES(?,?,NOW())"; // 업데이트 된 해시태그 등록
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
 			// 해시태그 삭제
 			stmt1 = conn.prepareStatement(deleteHashtagSql);
 			stmt1.setInt(1, cashbook.getCashbookNo());

@@ -18,6 +18,11 @@
 		int endDay = (Integer)request.getAttribute("endDay");
 		int endBlank = (Integer)request.getAttribute("endBlank");
 		int totalTd = (Integer)request.getAttribute("totalTd");
+	
+		int totalCash = (Integer)request.getAttribute("totalCash");
+		int income = (Integer)request.getAttribute("income");
+		int expense = (Integer)request.getAttribute("expense");
+		
 		/* 		
 			-- 디버깅
 			System.out.println("[list.size() CashBookListByMonth.jsp] : " + list.size());
@@ -32,23 +37,37 @@
 	%>
 	<br>
 	<h2 class="text-center"><%=y%>년 <%=m%>월 가계부</h2>
+	<!-- 월별 수입/지출 합계  -->
+	<div class="text-center">
+		<span class="text-success">[수입]</span>+<%=income%>원 &nbsp;&nbsp;<span class="text-danger">[지출]</span>-<%=expense%>원 <br>
+		<span><%=y%>년 <%=m%>월 총 사용금액 : <%=totalCash%>원</span>
+		<%
+			if(totalCash < 0) {
+		%>
+				<span class="text-primary"> ※지출을 줄여보세요!</span>
+		<%
+			}
+		%>
+	</div>
+	
 	<div style="float:right">
 		<a href="<%=request.getContextPath()%>/SelectMemberOneController?memberId=<%=session.getAttribute("sessionMemberId")%>">[<%=session.getAttribute("sessionMemberId")%>]</a>님 반갑습니다.
 		<a href="<%=request.getContextPath()%>/LogoutController" class="btn btn-outline-info btn-sm">로그아웃</a>
 	</div>
 	<div style="float:left">
 		<a href="<%=request.getContextPath()%>/TagController" class="btn btn-info">해시태그</a>
+		<a href="<%=request.getContextPath()%>/SelectMemberOneController?memberId=<%=session.getAttribute("sessionMemberId")%>" class="btn btn-info">회원정보</a>
 	</div>
 	<br><br>
 		<table class="table table-bordered">
 			<colgroup>
-				<col style="width:14%">
-				<col style="width:14%">
-				<col style="width:14%">
-				<col style="width:14%">
-				<col style="width:14%">
-				<col style="width:14%">
-				<col style="width:14%">
+				<col style="width:10%">
+				<col style="width:10%">
+				<col style="width:10%">
+				<col style="width:10%">
+				<col style="width:10%">
+				<col style="width:10%">
+				<col style="width:10%">
 			</colgroup>
 		 	<thead class="table-info text-center">
 		 		<tr>
@@ -83,7 +102,7 @@
 			 						c = "text-danger";
 			 					}
 			 		%>
-			 						<td class="<%=c%>">
+			 						<td class="<%=c%>" style="height: 170px;">
 			 							<%=i-startBlank%>
 			 							<a href="<%=request.getContextPath()%>/InsertCashbookController?y=<%=y%>&m=<%=m%>&d=<%=i-startBlank%>" class="btn btn-light text-info float-right">입력</a> <hr>
 			 							<div>

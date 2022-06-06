@@ -1,6 +1,9 @@
 package dao;
 
 import java.util.*;
+
+import util.DBUtil;
+
 import java.sql.*;
 
 public class HashtagDao {
@@ -9,6 +12,7 @@ public class HashtagDao {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
+		conn = DBUtil.getConnection();
 		String sql = "SELECT b.tag tag, COUNT(*) cnt, RANK() over(ORDER BY cnt DESC) rank"
 					+ " FROM (SELECT c.cashbook_no cashbookNo, c.member_id memberId"
 					+ "		FROM cashbook c INNER JOIN member m"
@@ -20,8 +24,6 @@ public class HashtagDao {
 					+ " GROUP BY tag"
 					+ " ORDER BY RANK";
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, memberId);
 			rs = stmt.executeQuery();
@@ -48,6 +50,7 @@ public class HashtagDao {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
+		conn = DBUtil.getConnection();
 		String sql = "SELECT RANK() over(ORDER BY t.cnt DESC) rank, t.tag tag, t.cnt cnt"
 					+ " FROM (SELECT t.tag tag, COUNT(*) cnt"
 					+ "		  FROM hashtag t INNER JOIN cashbook c"
@@ -55,8 +58,6 @@ public class HashtagDao {
 					+ "		  WHERE c.kind = ? AND c.member_id=?"
 					+ "		  GROUP BY t.tag) t";
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, kind);
 			stmt.setString(2, memberId);
@@ -84,14 +85,13 @@ public class HashtagDao {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
+		conn = DBUtil.getConnection();
 		String sql = "SELECT h.tag tag, COUNT(*) cnt, RANK() over(ORDER BY cnt DESC) ranking"
 					+ " FROM hashtag h INNER JOIN cashbook c"
 					+ "		ON h.cashbook_no = c.cashbook_no"
 					+ " WHERE c.cash_date BETWEEN ? AND ? AND c.member_id=?"
 					+ " GROUP BY tag";
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, startDate);
 			stmt.setString(2, endDate);
@@ -120,14 +120,13 @@ public class HashtagDao {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
+		conn = DBUtil.getConnection();
 		String sql = "SELECT h.tag tag, c.cash_date cashDate, c.kind kind, c.cash cash, c.memo memo"
 					+ " FROM cashbook c INNER JOIN hashtag h"
 					+ "		ON c.cashbook_no=h.cashbook_no"
 					+ " WHERE h.tag=? AND c.member_id=?"
 					+ " ORDER BY c.cash_date";
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, tag);
 			stmt.setString(2, memberId);

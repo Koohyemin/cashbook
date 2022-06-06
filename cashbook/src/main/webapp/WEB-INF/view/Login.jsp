@@ -22,16 +22,17 @@
 			<tr>
 				<th>ID</th>
 				<td>
-					<input type="text" name="memberId" class="form-control" placeholder="Enter ID">
+					<input type="text" name="memberId" class="form-control" value="guest" placeholder="Enter ID">
 				</td>
 			</tr>
 			<tr>
 				<th>비밀번호</th>
 				<td>
-					<input type="password" name="memberPw" class="form-control" placeholder="Enter PW ">
+					<input type="password" name="memberPw" class="form-control" value="1234" placeholder="Enter PW ">
 				</td>
 			</tr>
 		</table>
+		<div class="text-danger float-left">[고객 로그인] ID : guest, 비밀번호 : 1234 / 로그인 누를 시, 바로 로그인 가능</div>
 		<div class="btn-group float-right" style="margin-left:5px;">
 			<button type="submit" class="btn btn-info btn">로그인</button>
 		</div>

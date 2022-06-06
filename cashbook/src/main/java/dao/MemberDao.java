@@ -3,6 +3,7 @@ package dao;
 import java.sql.*;
 import java.util.*;
 
+import util.DBUtil;
 import vo.*;
 
 public class MemberDao {
@@ -12,10 +13,9 @@ public class MemberDao {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
+		conn = DBUtil.getConnection();
 		String sql = "SELECT member_id memberId FROM member WHERE member_id=? AND member_pw=PASSWORD(?)";
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, member.getMemberId());
 			stmt.setString(2, member.getMemberPw());
@@ -40,10 +40,9 @@ public class MemberDao {
 	public void insertMember(Member member) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
+		conn = DBUtil.getConnection();
 		String sql = "INSERT INTO member(member_id, member_pw, member_name, nick_name, create_date) VALUES(?,PASSWORD(?),?,?,NOW())";
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, member.getMemberId());
 			stmt.setString(2, member.getMemberPw());
@@ -73,6 +72,7 @@ public class MemberDao {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
+		conn = DBUtil.getConnection();
 		String sql = "SELECT "
 					+ "		member_id memberId"
 					+ "		, member_name memberName"
@@ -82,8 +82,6 @@ public class MemberDao {
 					+ " FROM member"
 					+ " WHERE member_id=?";
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, memberId);
 			rs = stmt.executeQuery();
@@ -113,12 +111,11 @@ public class MemberDao {
 		int row = 0;
 		Connection conn = null;
 		PreparedStatement stmt = null;
+		conn = DBUtil.getConnection();
 		// 기존 비밀번호랑 일치하지않다면 update되지않음
 		String sql = "UPDATE member SET member_name=?, nick_name=?"
 					+ " WHERE member_id=? AND member_pw=PASSWORD(?)";
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, member.getMemberName());
 			stmt.setString(2, member.getNickName());
@@ -145,6 +142,7 @@ public class MemberDao {
 		PreparedStatement stmt1 = null;
 		PreparedStatement stmt2 = null;
 		PreparedStatement stmt3 = null;
+		conn = DBUtil.getConnection();
 		String hashtagSql = "DELETE h"
 				+ " FROM hashtag h INNER JOIN cashbook c"
 				+ "	ON h.cashbook_no=c.cashbook_no"
@@ -152,8 +150,6 @@ public class MemberDao {
 		String cashbooksql = "DELETE FROM cashbook WHERE member_id=?"; // 고객 관련 캐시북 삭제
 		String memberSql = "DELETE FROM member WHERE member_id=? AND member_pw=PASSWORD(?)"; // 고객 정보 삭제
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
 			conn.setAutoCommit(false);
 			// 해시태그 삭제
 			stmt1 = conn.prepareStatement(hashtagSql);
@@ -197,12 +193,11 @@ public class MemberDao {
 		int row = 0;
 		Connection conn = null;
 		PreparedStatement stmt = null;
+		conn = DBUtil.getConnection();
 		// 기존 비밀번호랑 일치하지않다면 update되지않음
 		String sql = "UPDATE member SET member_pw=PASSWORD(?)"
 					+ " WHERE member_id=? AND member_pw=PASSWORD(?)";
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, memberPw);
 			stmt.setString(2, memberId);
@@ -227,10 +222,9 @@ public class MemberDao {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
+		conn = DBUtil.getConnection();
 		String sql = "SELECT member_id memberId FROM member";
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cashbook","root","java1234");
 			stmt = conn.prepareStatement(sql);
 			rs = stmt.executeQuery();
 			while(rs.next()) {
